@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Carousel from 'simple-carousel-react-native';
 import Upload from './components/UserScreen';
 import { Card } from 'react-native-paper';
+import firebase from 'firebase';
 
 class HomeScreen extends React.Component {
   render() {
