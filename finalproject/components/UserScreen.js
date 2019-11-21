@@ -4,11 +4,11 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 export default class AssetExample extends React.Component {
   render() {
     return (
-      <View>
-        <TouchableOpacity style={styles.container}>
+      <View style={styles.container}>
           <Text style={styles.paragraph}>
             Upload new memes
           </Text>
+        <TouchableOpacity style={styles.container}>
           <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
         </TouchableOpacity>
       </View>
@@ -19,12 +19,11 @@ export default class AssetExample extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+    justifyContent: 'flex-start',
+    padding: 20,
+    height: '34%',
   },
   paragraph: {
-    margin: 24,
-    marginTop: 0,
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -32,5 +31,6 @@ const styles = StyleSheet.create({
   logo: {
     height: 128,
     width: 128,
+    backgroundColor: '#e6eaec',
   }
 });
