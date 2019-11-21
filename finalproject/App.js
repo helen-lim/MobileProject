@@ -8,30 +8,52 @@ import Upload from './components/UserScreen';
 import { Card } from 'react-native-paper';
 import firebase from 'firebase';
 
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headertext}> MemeDer </Text>
-          </View>
-          <View style={styles.subcontainer1}>
-            <Carousel color='black' height={300} showBubbles={false} >
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
-              </View>
-            </Carousel> 
-          </View>
-        </View>
-    );
-  }
+const firebaseConfig = {
+  apiKey: "AIzaSyCChz3oZH9AKYcYpSKZhi2o3wirKfArLvE",
+  authDomain: "fir-lab-5e989.firebaseapp.com",
+  databaseURL: "https://fir-lab-5e989.firebaseio.com",
+  projectId: "fir-lab-5e989",
+  storageBucket: "fir-lab-5e989.appspot.com",
+  messagingSenderId: "901728117691",
+  appId: "1:901728117691:web:c7c91cbff3ff6c341f1a9e",
+  measurementId: "G-NJ2PC5E57G"
+};
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+var database = firebase.database();
+
+function HomeScreen(props) {
+
+  database.ref('event/').on('value', function(snapshot) {
+    let parseObject = snapshot.val();
+    console.log(parseObject);
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  })
+
+  return (
+    <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headertext}> MemeDer </Text>
+        </View>
+        <View style={styles.subcontainer1}>
+          <Carousel color='black' height={300} showBubbles={false} >
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
+            </View>
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
+            </View>
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
+            </View>
+          </Carousel> 
+        </View>
+      </View>
+  );
 }
 
 class LikedScreen extends React.Component {
