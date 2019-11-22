@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Image, Button, Text, View, StyleSheet, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Picker,Image, Button, Text, View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -8,6 +9,7 @@ import Upload from './components/UserScreen';
 import { Card } from 'react-native-paper';
 import firebase from 'firebase';
 
+<<<<<<< Updated upstream
 class HomeScreen extends React.Component {
   render() {
     return (
@@ -28,44 +30,122 @@ class HomeScreen extends React.Component {
               </View>
             </Carousel> 
           </View>
-        </View>
-    );
-  }
+=======
+const firebaseConfig = {
+    apiKey: "AIzaSyB6Fnon0O-_MfmPUwZ1ZUeAuqvzsKLAjFk",
+    authDomain: "final-project-e1ed8.firebaseapp.com",
+    databaseURL: "https://final-project-e1ed8.firebaseio.com",
+    projectId: "final-project-e1ed8",
+    storageBucket: "final-project-e1ed8.appspot.com",
+    messagingSenderId: "113481072697",
+    appId: "1:113481072697:web:55d5c5b63d4ab5cafdcde8",
+    measurementId: "G-7MHKR4J3NM"
+};
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
 
-class LikedScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-          <View>
-            <View style={styles.header}>
-              <Text style={styles.headertext}> MemeDer </Text>
+var storage = firebase.storage();
+var pathReference = storage.ref('pepe.jpg').getDownloadURL().then(function(url) {
+  console.log(url)
+});
+var pathReference1 = storage.ref('womanyellingcat.jpg').getDownloadURL().then(function(url) {
+  console.log(url)
+});
+var pathReference2 = storage.ref('galaxybrain.jpg').getDownloadURL().then(function(url) {
+  console.log(url)
+});
+
+
+var database = firebase.database();
+function HomeScreen(props) {
+  const [unseenMemes, setUnseenMemes] = useState([]);
+  const [likedMemes, setLikedMemes] = useState([]);
+
+  useEffect(() => {    
+    database.ref('memes/').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      setUnseenMemes(parseObject);
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    })
+  },[]);
+
+  return (
+    <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headertext}> MemeDer </Text>
+        </View>
+        <View style={styles.subcontainer1}>
+          <Carousel color='black' height={300} showBubbles={false} >
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
             </View>
-          </View>
-          <View style={styles.subcontainer1}>
-            <Text style={styles.paragraph}>
-              Liked Memes
-            </Text>
-            <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/pepe.jpg')}/>
-              </View>
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
-              </View>
-            </ScrollView>
-          </View>
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
+            </View>
+            <View style={styles.subcontainer2}>
+              <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
+            </View>
+          </Carousel> 
+>>>>>>> Stashed changes
         </View>
     );
   }
+
 }
 
-class UserScreen extends React.Component {
-  render() {
+function LikedScreen(props) {
+  const [unseenMemes, setUnseenMemes] = useState([]);
+  const [likedMemes, setLikedMemes] = useState([]);
+
+  useEffect(() => {    
+    database.ref('memes/').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      setUnseenMemes(parseObject);
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    })
+  },[]);
+
+  return (
+    <View style={styles.container}>
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.headertext}> MemeDer </Text>
+          </View>
+        </View>
+        <View style={styles.subcontainer1}>
+          <Text style={styles.paragraph}>
+            Liked Memes
+          </Text>
+          <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+            {unseenMemes.map((meme, index) => (
+              <View style={styles.subcontainer3}>
+                <Image style={styles.listimage} source={{uri : meme.link }}/>
+                <Text>{meme.name} {meme.creator}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+  );
+}
+
+function UserScreen(props) {
+  const [unseenMemes, setUnseenMemes] = useState([]);
+  const [likedMemes, setLikedMemes] = useState([]);
+
+  useEffect(() => {    
+    database.ref('memes/').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      setUnseenMemes(parseObject);
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    })
+  },[]);
+
     return (
         <View style={styles.container}>
           <View>
@@ -81,20 +161,16 @@ class UserScreen extends React.Component {
               Submitted Memes
             </Text>
             <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/pepe.jpg')}/>
-              </View>
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
-              </View>
+              {unseenMemes.map((meme, index) => (
+                <View style={styles.subcontainer3}>
+                  <Image style={styles.listimage} source={{uri : meme.link }}/>
+                  <Text>{meme.name} {meme.creator}</Text>
+                </View>
+              ))}
             </ScrollView>
           </View>
         </View>
     );
-  }
 }
 
 const TabNavigator = createBottomTabNavigator({
