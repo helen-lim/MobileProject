@@ -9,28 +9,6 @@ import Upload from './components/UserScreen';
 import { Card } from 'react-native-paper';
 import firebase from 'firebase';
 
-<<<<<<< Updated upstream
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headertext}> MemeDer </Text>
-          </View>
-          <View style={styles.subcontainer1}>
-            <Carousel color='black' height={300} showBubbles={false} >
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
-              </View>
-              <View style={styles.subcontainer2}>
-                <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
-              </View>
-            </Carousel> 
-          </View>
-=======
 const firebaseConfig = {
     apiKey: "AIzaSyB6Fnon0O-_MfmPUwZ1ZUeAuqvzsKLAjFk",
     authDomain: "final-project-e1ed8.firebaseapp.com",
@@ -57,7 +35,6 @@ var pathReference2 = storage.ref('galaxybrain.jpg').getDownloadURL().then(functi
   console.log(url)
 });
 
-
 var database = firebase.database();
 function HomeScreen(props) {
   const [unseenMemes, setUnseenMemes] = useState([]);
@@ -74,26 +51,24 @@ function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headertext}> MemeDer </Text>
-        </View>
-        <View style={styles.subcontainer1}>
-          <Carousel color='black' height={300} showBubbles={false} >
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
-            </View>
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
-            </View>
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
-            </View>
-          </Carousel> 
->>>>>>> Stashed changes
-        </View>
-    );
-  }
-
+      <View style={styles.header}>
+        <Text style={styles.headertext}> MemeDer </Text>
+      </View>
+      <View style={styles.subcontainer1}>
+        <Carousel color='black' height={300} showBubbles={false} >
+          <View style={styles.subcontainer2}>
+            <Image style={styles.memeimage} source={require('./assets/pepe.jpg')} resizeMode="contain"/>
+          </View>
+          <View style={styles.subcontainer2}>
+            <Image style={styles.memeimage} source={require('./assets/womanyellingcat.jpg')} resizeMode="contain"/>
+          </View>
+          <View style={styles.subcontainer2}>
+            <Image style={styles.memeimage} source={require('./assets/galaxybrain.jpg')} resizeMode="contain"/>
+          </View>
+        </Carousel> 
+      </View>
+    </View>
+  );
 }
 
 function LikedScreen(props) {
