@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Picker,Image, Button, Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -8,6 +8,7 @@ import Carousel from 'simple-carousel-react-native';
 import Upload from './components/UserScreen';
 import { Card } from 'react-native-paper';
 import firebase from 'firebase';
+import * as ImagePicker from 'expo-image-picker'; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyB6Fnon0O-_MfmPUwZ1ZUeAuqvzsKLAjFk",
@@ -121,31 +122,51 @@ function UserScreen(props) {
     })
   },[]);
 
-    return (
-        <View style={styles.container}>
-          <View>
-            <View style={styles.header}>
-              <Text style={styles.headertext}> MemeDer </Text>
-            </View>
-            <Card>
-              <Upload/>
-            </Card>
+  onChooseImagePress = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync();
+
+    if(!result.cancelled) {
+      this.uploadImage(result.uri, "test-image")
+      .then(() => {
+        Alert.alert('success');
+      })
+    }
+  }
+
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    var ref = firebase.storage().ref().child("images/" + imageName);
+    return ref.put(blob);
+  }
+
+  return (
+      <View style={styles.container}>
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.headertext}> MemeDer </Text>
           </View>
-          <View style={styles.subcontainer1}>
-            <Text style={styles.paragraph}>
-              Submitted Memes
-            </Text>
-            <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-              {unseenMemes.map((meme, index) => (
-                <View style={styles.subcontainer3}>
-                  <Image style={styles.listimage} source={{uri : meme.link }}/>
-                  <Text>{meme.name} {meme.creator}</Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
+          <Card>
+            <Upload/>
+          </Card>
+          <Button title="Choose image..." onPress={this.onChooseImagePress} />
         </View>
-    );
+        <View style={styles.subcontainer1}>
+          <Text style={styles.paragraph}>
+            Submitted Memes
+          </Text>
+          <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+            {unseenMemes.map((meme, index) => (
+              <View style={styles.subcontainer3}>
+                <Image style={styles.listimage} source={{uri : meme.link }}/>
+                <Text>{meme.name} {meme.creator}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+  );
 }
 
 const TabNavigator = createBottomTabNavigator({
