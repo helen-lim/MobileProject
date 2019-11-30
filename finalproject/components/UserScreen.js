@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; 
 import { storage, database } from './Firebase';
 
 export default function UserScreen(props) {
   const [unseenMemes, setUnseenMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
+  const [submitName, onChangeText] = useState('Meme Name');
 
   useEffect(() => {    
     database.ref('memes/').on('value', function(snapshot) {
@@ -38,11 +39,13 @@ export default function UserScreen(props) {
     let test = '1';
 
     if(!result.cancelled) {
-      this.uploadImage(result.uri, "test-image")
-      .then((refpath) => {
-        this.writeMemeData('Kane', true, refpath, '', []);
-        console.log(test);
-        Alert.alert('Upload successful!');
+      this.uploadImage(result.uri, submitName)
+      .then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((url) => {
+          this.writeMemeData('Kane', true, url, submitName, []);
+          console.log(test);
+          Alert.alert('Upload successful!');
+        })
       })
     }
   }
@@ -53,8 +56,8 @@ export default function UserScreen(props) {
 
     var ref = storage.ref().child("images/" + imageName);
     ref.put(blob)
-    var refpath = ref.getDownloadURL()
-    return Promise.resolve(refpath);
+
+    return ref.put(blob)
   }
 
   return (
@@ -70,6 +73,11 @@ export default function UserScreen(props) {
             <TouchableOpacity onPress={this.onChooseImagePress}>
               <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
             </TouchableOpacity>
+            <TextInput
+              style={styles.textinputbox}
+              onChangeText={text => onChangeText(text)}
+              value={submitName}
+            />
           </View>
         </View>
         <View style={styles.subcontainer1}>
@@ -148,5 +156,12 @@ const styles = StyleSheet.create({
     height: 128,
     width: 128,
     backgroundColor: '#e6eaec',
+  },
+  textinputbox: { 
+    height: 40, 
+    width: '60%', 
+    marginTop: 10, 
+    borderColor: 'gray', 
+    borderWidth: 1 
   }
 });
