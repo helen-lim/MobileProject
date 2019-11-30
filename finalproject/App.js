@@ -26,6 +26,7 @@ if (!firebase.apps.length) {
 }
 
 var storage = firebase.storage();
+/*
 var pathReference = storage.ref('pepe.jpg').getDownloadURL().then(function(url) {
   console.log(url)
 });
@@ -34,9 +35,10 @@ var pathReference1 = storage.ref('womanyellingcat.jpg').getDownloadURL().then(fu
 });
 var pathReference2 = storage.ref('galaxybrain.jpg').getDownloadURL().then(function(url) {
   console.log(url)
-});
+});*/
 
 var database = firebase.database();
+
 function HomeScreen(props) {
   const [unseenMemes, setUnseenMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
@@ -44,7 +46,11 @@ function HomeScreen(props) {
   useEffect(() => {    
     database.ref('memes/').on('value', function(snapshot) {
       let parseObject = snapshot.val();
-      setUnseenMemes(parseObject);
+      var result = [];
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      }
+      setUnseenMemes(result);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
@@ -79,7 +85,11 @@ function LikedScreen(props) {
   useEffect(() => {    
     database.ref('memes/').on('value', function(snapshot) {
       let parseObject = snapshot.val();
-      setUnseenMemes(parseObject);
+      var result = [];
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      }
+      setUnseenMemes(result);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
@@ -116,19 +126,38 @@ function UserScreen(props) {
   useEffect(() => {    
     database.ref('memes/').on('value', function(snapshot) {
       let parseObject = snapshot.val();
-      setUnseenMemes(parseObject);
+      var result = [];
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      }
+      setUnseenMemes(result);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
   },[]);
 
+  writeMemeData = async (creator, liked, link, name, tags) => {
+    var memesRef = database.ref('memes/');
+    var newMemeRef = memesRef.push();
+    return newMemeRef.set({
+      creator,
+      liked,
+      link,
+      name,
+      tags
+    })
+  }
+
   onChooseImagePress = async () => {
     let result = await ImagePicker.launchImageLibraryAsync();
+    let test = '1';
 
     if(!result.cancelled) {
       this.uploadImage(result.uri, "test-image")
-      .then(() => {
-        Alert.alert('success');
+      .then((refpath) => {
+        this.writeMemeData('Kane', true, refpath, '', []);
+        console.log(test);
+        Alert.alert('Upload successful!');
       })
     }
   }
@@ -137,8 +166,10 @@ function UserScreen(props) {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    var ref = firebase.storage().ref().child("images/" + imageName);
-    return ref.put(blob);
+    var ref = storage.ref().child("images/" + imageName);
+    ref.put(blob)
+    var refpath = ref.getDownloadURL()
+    return Promise.resolve(refpath);
   }
 
   return (
