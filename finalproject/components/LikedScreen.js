@@ -29,14 +29,13 @@ export default function LikedScreen(props) {
             <Text style={styles.paragraph}>
               Liked Memes
             </Text>
-            <Text style={styles.paragraph}>
-              {currentUser && currentUser.uid}
-            </Text>
             <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-              {unseenMemes.map((meme, index) => (
+              {unseenMemes.filter((meme) => {
+                return meme.liked == true
+              }).map((meme, index) => (
                 <View style={styles.subcontainer3}>
                   <Image style={styles.listimage} source={{uri : meme.link }}/>
-                  <Text>{meme.name} {meme.creator}</Text>
+                  <Text>{meme.name}</Text>
                 </View>
               ))}
             </ScrollView>

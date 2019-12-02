@@ -6,23 +6,23 @@ import { storage, database } from './Firebase';
 import firebase from 'firebase'
 
 export default function UserScreen(props) {
-  const [unseenMemes, setUnseenMemes] = useState([]);
+  const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
   const [submitName, onChangeText] = useState('Meme Name');
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {    
+    setCurrentUser(firebase.auth().currentUser)
     database.ref('memes/').on('value', function(snapshot) {
       let parseObject = snapshot.val();
       var result = [];
       for(var i in parseObject) {
         result.push(parseObject[i]);
       }
-      setUnseenMemes(result);
+      setSubmittedMemes(result);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
-    setCurrentUser(firebase.auth().currentUser)
   },[]);
 
   writeMemeData = async (creator, liked, link, name, tags) => {
@@ -45,7 +45,7 @@ export default function UserScreen(props) {
       this.uploadImage(result.uri, submitName)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((url) => {
-          this.writeMemeData(currentUser && currentUser.uid, true, url, submitName, []);
+          this.writeMemeData(currentUser && currentUser.uid, false, url, submitName, []);
           console.log(test);
           Alert.alert('Upload successful!');
         })
@@ -85,10 +85,12 @@ export default function UserScreen(props) {
             Submitted Memes
           </Text>
           <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-            {unseenMemes.map((meme, index) => (
+            {submittedMemes.filter((meme) => {
+              return meme.creator == (currentUser && currentUser.uid)
+            }).map((meme, index) => (
               <View style={styles.subcontainer3}>
                 <Image style={styles.listimage} source={{uri : meme.link }}/>
-                <Text>{meme.name} {meme.creator}</Text>
+                <Text>{meme.name}</Text>
               </View>
             ))}
           </ScrollView>
