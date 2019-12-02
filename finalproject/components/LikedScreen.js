@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import Carousel from 'simple-carousel-react-native';
 import { storage, database } from './Firebase';
 
-export default function HomeScreen(props) {
+export default function LikedScreen(props) {
     const [unseenMemes, setUnseenMemes] = useState([]);
     const [likedMemes, setLikedMemes] = useState([]);
   
@@ -23,28 +22,29 @@ export default function HomeScreen(props) {
   
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headertext}> MemeDer </Text>
+          <View>
+            <View style={styles.header}>
+              <Text style={styles.headertext}> MemeDer </Text>
+            </View>
+          </View>
+          <View style={styles.subcontainer1}>
+            <Text style={styles.paragraph}>
+              Liked Memes
+            </Text>
+            <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+              {unseenMemes.map((meme, index) => (
+                <View style={styles.subcontainer3}>
+                  <Image style={styles.listimage} source={{uri : meme.link }}/>
+                  <Text>{meme.name} {meme.creator}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
         </View>
-        <View style={styles.subcontainer1}>
-          <Carousel color='black' height={300} showBubbles={false} >
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('../assets/pepe.jpg')} resizeMode="contain"/>
-            </View>
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('../assets/womanyellingcat.jpg')} resizeMode="contain"/>
-            </View>
-            <View style={styles.subcontainer2}>
-              <Image style={styles.memeimage} source={require('../assets/galaxybrain.jpg')} resizeMode="contain"/>
-            </View>
-          </Carousel> 
-        </View>
-      </View>
     );
   }
 
-  
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'space-around',
@@ -55,17 +55,17 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       alignItems: 'center',
     },  
-    subcontainer2: {
+    subcontainer3: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       alignItems: 'center',
       width: '100%',
     }, 
-    memeimage: {
+    listimage: {
       flex: 1,
       alignSelf: 'stretch',
-      width: '100%',
-      height: undefined,
+      width: 300,
+      height:300,
     },
     header:{
       height: 60,
@@ -80,6 +80,12 @@ const styles = StyleSheet.create({
       letterSpacing: 2,
       color: '#414a4e',
       fontWeight: 'bold',
+    },
+    paragraph: {
+      margin: 24,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
     },
   });
   
