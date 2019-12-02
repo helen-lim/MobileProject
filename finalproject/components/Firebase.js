@@ -15,5 +15,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+export var auth = firebase.auth();
 export var storage = firebase.storage();
 export var database = firebase.database();

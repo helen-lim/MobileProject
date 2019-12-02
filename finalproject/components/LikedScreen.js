@@ -2,10 +2,12 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { storage, database } from './Firebase';
+import firebase from 'firebase'
 
 export default function LikedScreen(props) {
     const [unseenMemes, setUnseenMemes] = useState([]);
     const [likedMemes, setLikedMemes] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
   
     useEffect(() => {    
       database.ref('memes/').on('value', function(snapshot) {
@@ -18,18 +20,17 @@ export default function LikedScreen(props) {
       }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
       })
+      setCurrentUser(firebase.auth().currentUser)
     },[]);
   
     return (
       <View style={styles.container}>
-          <View>
-            <View style={styles.header}>
-              <Text style={styles.headertext}> MemeDer </Text>
-            </View>
-          </View>
           <View style={styles.subcontainer1}>
             <Text style={styles.paragraph}>
               Liked Memes
+            </Text>
+            <Text style={styles.paragraph}>
+              {currentUser && currentUser.uid}
             </Text>
             <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
               {unseenMemes.map((meme, index) => (

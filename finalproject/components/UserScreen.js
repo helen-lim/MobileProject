@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; 
 import { storage, database } from './Firebase';
+import firebase from 'firebase'
 
 export default function UserScreen(props) {
   const [unseenMemes, setUnseenMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
   const [submitName, onChangeText] = useState('Meme Name');
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {    
     database.ref('memes/').on('value', function(snapshot) {
@@ -20,6 +22,7 @@ export default function UserScreen(props) {
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
+    setCurrentUser(firebase.auth().currentUser)
   },[]);
 
   writeMemeData = async (creator, liked, link, name, tags) => {
@@ -42,7 +45,7 @@ export default function UserScreen(props) {
       this.uploadImage(result.uri, submitName)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((url) => {
-          this.writeMemeData('Kane', true, url, submitName, []);
+          this.writeMemeData(currentUser && currentUser.uid, true, url, submitName, []);
           console.log(test);
           Alert.alert('Upload successful!');
         })
@@ -63,9 +66,6 @@ export default function UserScreen(props) {
   return (
       <View style={styles.container}>
         <View>
-          <View style={styles.header}>
-            <Text style={styles.headertext}> MemeDer </Text>
-          </View>
           <View style={styles.subcontainer4}>
             <Text style={styles.buttonText}>
               Upload new memes

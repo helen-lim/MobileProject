@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Platform, SafeAreaView, Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import Carousel from 'simple-carousel-react-native';
 import { storage, database } from './Firebase';
+import firebase from 'firebase'
 
 import Swiper from 'react-native-deck-swiper'
 import { Card } from '../components/Card'
@@ -30,6 +31,7 @@ const HomeScreenPics = [
 export default function HomeScreen(props) {
   const [unseenMemes, setUnseenMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const useSwiper = useRef(null).current
   const handleOnSwipedLeft = () => useSwiper.swipeLeft()
@@ -47,6 +49,7 @@ export default function HomeScreen(props) {
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
+    setCurrentUser(firebase.auth().currentUser)
   },[]);
 
   return (

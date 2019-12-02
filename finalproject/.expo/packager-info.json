@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 9404,
-  "expoServerNgrokUrl": "https://8a-jip.helen-lim.finalproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.8a-jip.helen-lim.finalproject.exp.direct",
-  "ngrokPid": 23516,
+  "packagerPid": 22696,
+  "expoServerNgrokUrl": "https://8a-jip.anonymous.finalproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.8a-jip.anonymous.finalproject.exp.direct",
+  "ngrokPid": 11000,
   "webpackServerPort": null
 }
