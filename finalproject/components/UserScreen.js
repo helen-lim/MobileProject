@@ -45,7 +45,7 @@ export default function UserScreen(props) {
       this.uploadImage(result.uri, submitName)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((url) => {
-          this.writeMemeData(currentUser && currentUser.uid, false, url, submitName, []);
+          this.writeMemeData(currentUser && currentUser.uid, [], url, submitName, []);
           console.log(test);
           Alert.alert('Upload successful!');
         })

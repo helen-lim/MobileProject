@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { storage, database } from './Firebase';
 import firebase from 'firebase'
+import Memecard from './meme'
 
 export default function LikedScreen(props) {
     const [unseenMemes, setUnseenMemes] = useState([]);
@@ -31,11 +32,15 @@ export default function LikedScreen(props) {
             </Text>
             <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
               {unseenMemes.filter((meme) => {
-                return meme.liked == true
+                for(var i in meme.liked) {
+                  if(meme.liked[i] == (currentUser && currentUser.uid)){
+                    return true
+                  }
+                }
+                return false
               }).map((meme, index) => (
                 <View style={styles.subcontainer3}>
-                  <Image style={styles.listimage} source={{uri : meme.link }}/>
-                  <Text>{meme.name}</Text>
+                  <Memecard uri={meme.link} name={meme.name}/>
                 </View>
               ))}
             </ScrollView>
