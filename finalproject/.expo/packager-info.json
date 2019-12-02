@@ -2,8 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 13940,
-  "expoServerNgrokUrl": "https://dt-mvf.anonymous.finalproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.dt-mvf.anonymous.finalproject.exp.direct",
-  "ngrokPid": 17512
+  "packagerPid": 9404,
+  "expoServerNgrokUrl": "https://8a-jip.helen-lim.finalproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.8a-jip.helen-lim.finalproject.exp.direct",
+  "ngrokPid": 23516,
+  "webpackServerPort": null
 }
