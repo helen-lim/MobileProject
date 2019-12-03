@@ -3,31 +3,33 @@ import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { storage, database } from './Firebase';
 import firebase from 'firebase'
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 //import Share from 'react-native-share'
 
 export default function Memecard(props) {
-    /*const shareSingleImage = async () => {
-        const shareOptions = {
-          title: 'Share file',
-          url: props.uri,
-          failOnCancel: false,
-        };
-    
-        try {
-          const ShareResponse = await Share.open(shareOptions);
-          setResult(JSON.stringify(ShareResponse, null, 2));
-        } catch (error) {
-          console.log('Error =>', error);
-          setResult('error: '.concat(getErrorString(error)));
-        }
-      };
-*/
-    return(
-        <View>
-            <Image style={styles.listimage} source={{uri : props.uri }}/>
-            <Text>{props.name}</Text>
-        </View>
-    );
+  share = async (thisuri) => { 
+    FileSystem.downloadAsync(
+    thisuri,
+    FileSystem.documentDirectory  + '.jpeg'
+    )
+    .then(({ uri }) => { 
+        console.log('Finished downloading to ', uri);
+
+        Sharing.shareAsync(uri); 
+    })
+    .catch(error => {
+      console.error(error); 
+    });
+  }
+
+  return(
+      <View>
+          <Image style={styles.listimage} source={{uri : props.uri }}/>
+          <Text>{props.name}</Text>
+          <Button onPress={()=>share(props.uri)} title="Share" />
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
