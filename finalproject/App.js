@@ -15,6 +15,7 @@ import UserScreen from './components/UserScreen';
 import LoadingScreen from './components/login/Loading'
 import SignUpScreen from './components/login/SignUp'
 import LoginScreen from './components/login/Login'
+import firebase from 'firebase'
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen },
@@ -42,7 +43,26 @@ const HomeScreenStack = createStackNavigator({
     Loading: { screen: LoadingScreen },
     SignUp: { screen: SignUpScreen },
     Login: { screen: LoginScreen },
-    Main: { screen: TabNavigator }
+    Main: { screen: TabNavigator,
+      navigationOptions: {
+        headerLeft: () => (
+          <Button
+            onPress={() => 
+              firebase.auth().signOut()
+              .then(function() {
+                // Sign-out successful.
+              })
+              .catch(function(error) {
+                // An error happened
+              })}
+            title="Logout"
+          />
+        ),
+        headerRight: () => (
+          <Text style={{ color: '#87ceeb' }}>Logout</Text>
+        ),
+      } 
+    }
 }, {
     initialRouteName: 'Loading',
     defaultNavigationOptions: {
@@ -52,12 +72,16 @@ const HomeScreenStack = createStackNavigator({
         backgroundColor: '#87ceeb',
       },
       headerTitleStyle: {
+        flex: 1, 
+        textAlign: 'center'
       },
+      headerLeft: () => (
+        <Text style={{ color: '#87ceeb' }}>Logout</Text>
+      ),
+      headerRight: () => (
+        <Text style={{ color: '#87ceeb' }}>Logout</Text>
+      ),
     },
-    navigationOptions: {
-      title: 'MyScreen',
-      left: null
-    }
 })
 
 export default createAppContainer(HomeScreenStack)
