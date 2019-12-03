@@ -11,7 +11,6 @@ import { storage, database } from './components/Firebase';
 import HomeScreen from './components/HomeScreen';
 import LikedScreen from './components/LikedScreen';
 import UserScreen from './components/UserScreen';import MapScreen from './components/MapScreen';
-``
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen},
