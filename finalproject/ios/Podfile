@@ -32,4 +32,6 @@ target 'finalproject' do
 
   use_unimodules!
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 end
