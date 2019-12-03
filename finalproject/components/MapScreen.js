@@ -12,28 +12,31 @@ import memoize from 'memoize-one';
 
 export default class MapScreen extends React.Component {
 
+    state = {
+        latitude: 38.0377,
+        longitude: 78.5024
+    }
+
     /**
      * Geolocation API (Navigator.geolocation) is built in functionality
      */
     getCurrentLocation = memoize(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                coordinates = {latitude: position.coords.latitude, longitude: position.coords.longitude};
-                console.log(coordinates);
-                return coordinates;
+                this.setState({
+                    latitude: position.coords.latitude, 
+                    longitude: position.coords.longitude
+                });
+                console.log(this.state);
             },
             (error) => { 
                 console.log("ERROR: " + error.message) 
-                return { latitude: 38.0377, longitude: 78.5024 } // Madison Bowl, Charlottesville, Virginia
             },
             { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
         );
     })
 
     render() {
-
-        const currentLocation = this.getCurrentLocation;
-
         return (
             <View style={styles.container}>
                 <View style={styles.mapContainer}>
@@ -45,7 +48,11 @@ export default class MapScreen extends React.Component {
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
-                    />
+                    >
+                        <Marker
+                            coordinate={this.state}
+                        />
+                    </MapView>
                 </View>
                 <View>
                     <Button
