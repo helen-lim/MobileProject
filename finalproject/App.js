@@ -10,12 +10,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { storage, database } from './components/Firebase';
 import HomeScreen from './components/HomeScreen';
 import LikedScreen from './components/LikedScreen';
-import UserScreen from './components/UserScreen';``
+import UserScreen from './components/UserScreen';
+import MapScreen from './components/MapScreen';
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen},
   Home: { screen: HomeScreen },
   Liked: { screen: LikedScreen },
+  Map: { screen: MapScreen },
   },{
     initialRouteName: 'Home',
     tabBarOptions: {
