@@ -33,7 +33,7 @@ export default function LikedScreen(props) {
             </Text>
             <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
               {unseenMemes.map((meme, index) => (
-                <View style={styles.subcontainer3}>
+                <View style={styles.subcontainer3} key={index}>
                   <Image style={styles.listimage} source={{uri : meme.link }}/>
                   <Text>{meme.name} {meme.creator}</Text>
                 </View>
