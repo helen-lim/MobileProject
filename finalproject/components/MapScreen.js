@@ -17,16 +17,28 @@ export default class MapScreen extends React.Component {
         longitude: 78.5024
     }
 
+    // Constants
+    latitudeDelta = 0.0722;
+    longitudeDelta = 0.0221;
+
     /**
      * Geolocation API (Navigator.geolocation) is built in functionality
+     * "memoize" keeps function pure and thus eliminates unneccessary re-renders
      */
-    getCurrentLocation = memoize(() => {
+    getCurrentLocation = memoize(mapView => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
                     latitude: position.coords.latitude, 
                     longitude: position.coords.longitude
                 });
+                this.mapView.animateToRegion({
+                    latitude: this.state.latitude,
+                    longitude: this.state.longitude,
+                    latitudeDelta: this.latitudeDelta,
+                    longitudeDelta: this.longitudeDelta,
+                }, 500);
+
                 console.log(this.state);
             },
             (error) => { 
@@ -41,18 +53,17 @@ export default class MapScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.mapContainer}>
                     <MapView 
+                        ref={map => {this.mapView = map}}
                         style={styles.mapStyle}
+                        showsUserLocation={true}
+                        followUserLocation={true}
                         initialRegion={{
                             latitude: 38.04057540975783,
                             longitude: -78.50022601271456,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
+                            latitudeDelta: this.latitudeDelta,
+                            longitudeDelta: this.longitudeDelta,
                         }}
-                    >
-                        <Marker
-                            coordinate={this.state}
-                        />
-                    </MapView>
+                    />
                 </View>
                 <View>
                     <Button
