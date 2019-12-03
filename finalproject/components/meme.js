@@ -24,20 +24,17 @@ export default function Memecard(props) {
   }
 
   return(
-      <View>
+      <View style={styles.container}>
           <Image style={styles.listimage} source={{uri : props.uri }}/>
-          <Text>{props.name}</Text>
+          <Text style={styles.textstyle}>{props.name}</Text>
           <Button onPress={()=>share(props.uri)} title="Share" />
       </View>
   );
 }
 
 const styles = StyleSheet.create({
-    subcontainer3: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        width: '100%',
+    container: {
+        paddingTop: '5%',
     }, 
     listimage: {
         flex: 1,
@@ -45,4 +42,10 @@ const styles = StyleSheet.create({
         width: 300,
         height:300,
     },
+    textstyle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      alignSelf: 'center',
+      margin: '3%',
+    }
 });

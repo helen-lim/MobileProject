@@ -4,6 +4,7 @@ import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, Toucha
 import * as ImagePicker from 'expo-image-picker'; 
 import { storage, database } from './Firebase';
 import firebase from 'firebase'
+import Memecard from './meme'
 
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
@@ -37,6 +38,22 @@ export default function UserScreen(props) {
     })
   }
 
+  onChooseCameraPress = async () => {
+    let result = await ImagePicker.launchCameraAsync();
+    let test = '1';
+
+    if(!result.cancelled) {
+      this.uploadImage(result.uri, submitName)
+      .then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((url) => {
+          this.writeMemeData(currentUser && currentUser.uid, [], url, submitName, []);
+          console.log(test);
+          Alert.alert('Upload successful!');
+        })
+      })
+    }
+  }
+
   onChooseImagePress = async () => {
     let result = await ImagePicker.launchImageLibraryAsync();
     let test = '1';
@@ -67,12 +84,17 @@ export default function UserScreen(props) {
       <View style={styles.container}>
         <View>
           <View style={styles.subcontainer4}>
+            <View style={styles.subcontainer5}>
+              <TouchableOpacity onPress={this.onChooseImagePress}>
+                <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.onChooseCameraPress}>
+                <Image style={styles.logo} source={require('../assets/camerabutton.png')} />
+              </TouchableOpacity>
+            </View>
             <Text style={styles.buttonText}>
               Upload new memes
             </Text>
-            <TouchableOpacity onPress={this.onChooseImagePress}>
-              <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
-            </TouchableOpacity>
             <TextInput
               style={styles.textinputbox}
               onChangeText={text => onChangeText(text)}
@@ -89,8 +111,7 @@ export default function UserScreen(props) {
               return meme.creator == (currentUser && currentUser.uid)
             }).map((meme, index) => (
               <View style={styles.subcontainer3}>
-                <Image style={styles.listimage} source={{uri : meme.link }}/>
-                <Text>{meme.name}</Text>
+                <Memecard uri={meme.link} name={meme.name}/>
               </View>
             ))}
           </ScrollView>
@@ -138,8 +159,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   paragraph: {
-    margin: 24,
-    fontSize: 18,
+    marginTop: 24,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -149,6 +170,13 @@ const styles = StyleSheet.create({
     padding: 20,
     height: '34%',
   },
+  subcontainer5: {
+    flexDirection: 'row',
+    alignContent: 'space-around',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginBottom: '2%',
+  }, 
   buttonText: {
     fontSize: 14,
     fontWeight: 'bold',
