@@ -6,37 +6,56 @@
 
 import * as React from 'react';
 import { Text, Button, View, StyleSheet, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import memoize from 'memoize-one';
 
 
-export default function MapScreen(props) {
+export default class MapScreen extends React.Component {
 
     /**
-     * Geolocation API (Navigator.geolocation) gets access to the current location of the device.
+     * Geolocation API (Navigator.geolocation) is built in functionality
      */
-    getCurrentLocation = () => {
+    getCurrentLocation = memoize(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-              console.log(position);
+                coordinates = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+                console.log(coordinates);
+                return coordinates;
             },
-            (error) => { console.log("ERROR: " + error.message) },
+            (error) => { 
+                console.log("ERROR: " + error.message) 
+                return { latitude: 38.0377, longitude: 78.5024 } // Madison Bowl, Charlottesville, Virginia
+            },
             { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
         );
-    }
+    })
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.mapContainer}>
-                <MapView style={styles.mapStyle} />
+    render() {
+
+        const currentLocation = this.getCurrentLocation;
+
+        return (
+            <View style={styles.container}>
+                <View style={styles.mapContainer}>
+                    <MapView 
+                        style={styles.mapStyle}
+                        initialRegion={{
+                            latitude: 38.04057540975783,
+                            longitude: -78.50022601271456,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                    />
+                </View>
+                <View>
+                    <Button
+                        title = "Current Location Button"
+                        onPress = {this.getCurrentLocation}
+                    />
+                </View>
             </View>
-            <View>
-                <Button
-                    title = "Current Location Button"
-                    onPress = {this.getCurrentLocation}
-                />
-            </View>
-        </View>
-    );
+        );
+    }
 }
 
 const styles = StyleSheet.create({
