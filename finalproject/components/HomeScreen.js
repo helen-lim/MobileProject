@@ -66,57 +66,72 @@ export default class HomeScreen extends Component {
     this._subscription = null;
   };
 
-  likeMeme = async (name, user, uid) => {
-    var result = [];
-    database.ref('memes/' + uid + '/liked').on('value', function(snapshot) {
-      let parseObject = snapshot.val();
-      var exists = false;
-      for(var i in parseObject) {
-        if(parseObject[i] == user){
-          exists = true;
-        }
-        if(exists == false){
-          result.push(parseObject[i]);
-        }
-      };
-    })
-    result.push(user)
-    var likedRef = database.ref('memes/' + uid + '/liked');
-    likedRef.set(result);
+  /**
+   * Saves to Firebase that a user liked a meme
+   */
+  likeMeme = async (memeID, userID) => {
+    var resultLikedBy = [];
+    var resultSeenBy = [];
 
-    database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
-      let parseObject = snapshot.val();
-      var exists = false;
-      for(var i in parseObject) {
-        if(parseObject[i] == user){
-          exists = true;
-        }
-        if(exists == false){
-          result.push(parseObject[i]);
-        }
+    // Get all users who LIKED the meme
+    database.ref('memes/' + memeID + '/liked').on('value', function(snapshot) {
+      let likedBy = snapshot.val();
+      for (var index in likedBy) {
+        resultLikedBy.push(likedBy[index]);
       };
-    })
-    result.push(user)
-    var seenRef = database.ref('memes/' + uid + '/seen');
-    seenRef.set(result);
+    });
+
+    // Get all users who have SEEN the meme
+    database.ref('memes/' + memeID + '/seen').on('value', function(snapshot) {
+      let seenBy = snapshot.val();
+      for (var index in seenBy) {
+        resultSeenBy.push(seenBy[index]);
+      };
+    });
+
+    // Add user to list
+    resultLikedBy.push(userID);
+    resultSeenBy.push(userID);
+
+    // Save to Firebase
+    var likedRef = database.ref('memes/' + memeID + '/liked');
+    var seenRef = database.ref('memes/' + memeID + '/seen');
+    likedRef.set(resultLikedBy);
+    seenRef.set(resultSeenBy);
   }
 
-  dislikeMeme = async (name, user, uid) => {
-    database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
-      let parseObject = snapshot.val();
-      var exists = false;
-      for(var i in parseObject) {
-        if(parseObject[i] == user){
-          exists = true;
-        }
-        if(exists == false){
-          result.push(parseObject[i]);
-        }
+  /**
+   * Saves to Firebase that a user disliked a meme
+   */
+  dislikeMeme = async (memeID, userID) => {
+    var resultDislikedBy = [];
+    var resultSeenBy = [];
+
+    // Get all users who LIKED the meme
+    database.ref('memes/' + memeID + '/disliked').on('value', function(snapshot) {
+      let dislikedBy = snapshot.val();
+      for (var index in dislikedBy) {
+        resultDislikedBy.push(dislikedBy[index]);
       };
-    })
-    result.push(user)
-    var seenRef = database.ref('memes/' + uid + '/seen');
-    seenRef.set(result);
+    });
+
+    // Get all users who have SEEN the meme
+    database.ref('memes/' + memeID + '/seen').on('value', function(snapshot) {
+      let seenBy = snapshot.val();
+      for (var index in seenBy) {
+        resultSeenBy.push(seenBy[index]);
+      };
+    });
+
+    // Add user to list
+    resultDislikedBy.push(userID);
+    resultSeenBy.push(userID);
+
+    // Save to Firebase
+    var dislikedRef = database.ref('memes/' + memeID + '/disliked');
+    var seenRef = database.ref('memes/' + memeID + '/seen');
+    dislikedRef.set(resultDislikedBy);
+    seenRef.set(resultSeenBy);
   }
  
   render() {
@@ -139,13 +154,13 @@ export default class HomeScreen extends Component {
         >
           {this.state.unseenMemes.filter((meme) => {
             for(var i in meme.seen) {
-              if(meme.seen[i] == (this.state.currentUser && this.state.currentUser.uid)){
+              if(meme.seen[i] == this.state.currentUser.uid) {
                 return false
               }
             }
             return true
           }).map((meme, index) => (
-            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
+            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.dislikeMeme(meme.uid, this.state.currentUser.uid)} onSwipedRight={() => this.likeMeme(meme.uid, this.state.currentUser.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
               <Text style={styles.memeText}>{meme.name}</Text>
             </Card>
@@ -172,13 +187,7 @@ export default class HomeScreen extends Component {
     );
   }
 };
-function round(n) {
-  if (!n) {
-    return 0;
-  }
- 
-  return Math.floor(n * 100) / 100;
-}
+
  
 const styles = StyleSheet.create({
   container: {
