@@ -23,23 +23,37 @@ const TabNavigator = createBottomTabNavigator({
   Home: { screen: HomeScreen },
   Liked: { screen: LikedScreen },
   Map: { screen: MapScreen },
-  },{
-    initialRouteName: 'Home',
+  }, 
+  {
+    initialRouteName : 'Home',
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        if (routeName === 'Home') {
+          return (
+            <Image
+              source={ require('./assets/home.png') }
+              style={{ width: 20, height: 20, }} />
+          );
+        } 
+        else if (routeName === 'Liked') {
+          return ( <Image source = {require('./assets/liked.png')} style = {{width:25, height:25}} />)
+        }
+        else if (routeName === 'User') {
+          return ( <Image source = {require('./assets/user.png')} style = {{width:20, height:20}} />)
+        }
+        else if (routeName === 'Map') {
+          return ( <Image source = {require('./assets/location.png')} style = {{width:20, height:20}} />)
+        }
+      },
+    }),
     tabBarOptions: {
-      activeTintColor: 'black',
-      activeBackgroundColor: '#87ceeb',
-      inactiveBackgroundColor: '#a8ddf3',
-      labelStyle: {
-        fontSize: 16,
-        paddingBottom: 10,
-      },
-      style: {
-        justifyContent: 'center',
-      },
-    }
-  }
-);
+      activeTintColor: '#2a9d84',
+      inactiveTintColor: '#264653',
+    },
+  },
 
+);
 
 const HomeScreenStack = createStackNavigator({
     Loading: { screen: LoadingScreen },
@@ -48,40 +62,41 @@ const HomeScreenStack = createStackNavigator({
     Main: { screen: TabNavigator,
       navigationOptions: {
         headerLeft: () => (
-          <Button
-            onPress={() => 
-              firebase.auth().signOut()
-              .then(function() {
-                // Sign-out successful.
-              })
-              .catch(function(error) {
-                // An error happened
-              })}
-            title="Logout"
-          />
+          <Text style={{ color: '#495054' }}>Logout</Text>
+          // <Button
+          //   onPress={() => 
+          //     firebase.auth().signOut()
+          //     .then(function() {
+          //       // Sign-out successful.
+          //     })
+          //     .catch(function(error) {
+          //       // An error happened
+          //     })}
+          //   title="Logout"
+          // />
         ),
         headerRight: () => (
-          <Text style={{ color: '#87ceeb' }}>Logout</Text>
+          <Text style={{ color: '#495054' }}>Logout</Text>
         ),
       } 
     }
 }, {
     initialRouteName: 'Loading',
     defaultNavigationOptions: {
-      title: 'MemeDer',
-      headerTintColor: '#fff',
+      title: 'memes',
+      headerTintColor: '#e3e8ea',
       headerStyle: {
-        backgroundColor: '#87ceeb',
+        backgroundColor: '#495054',
       },
       headerTitleStyle: {
         flex: 1, 
         textAlign: 'center'
       },
       headerLeft: () => (
-        <Text style={{ color: '#87ceeb' }}>Logout</Text>
+        <Text style={{ color: '#495054' }}>Logout</Text>
       ),
       headerRight: () => (
-        <Text style={{ color: '#87ceeb' }}>Logout</Text>
+        <Text style={{ color: '#495054' }}>Logout</Text>
       ),
     },
 })

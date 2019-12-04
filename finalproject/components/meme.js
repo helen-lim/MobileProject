@@ -5,6 +5,7 @@ import { storage, database } from './Firebase';
 import firebase from 'firebase'
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+//import { createRequireFromPath } from 'module';
 //import Share from 'react-native-share'
 
 export default function Memecard(props) {
@@ -27,7 +28,9 @@ export default function Memecard(props) {
       <View style={styles.container}>
           <Image style={styles.listimage} source={{uri : props.uri }}/>
           <Text style={styles.textstyle}>{props.name}</Text>
-          <Button onPress={()=>share(props.uri)} title="Share" />
+          <TouchableOpacity onPress={()=>share(props.uri)}>
+            <Image style = {{width:20, height:20}} source={ require('../assets/share.png') } />
+          </TouchableOpacity>
       </View>
   );
 }

@@ -109,10 +109,6 @@ export default class HomeScreen extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
-        <View style = {{flex:1, justifyContent:'center', alignItems:'center', width: 300, height: 100, }}><Text>
-          Orientation: 
-        </Text>
-        </View>
         <CardStack
           style={styles.content}
           renderNoMoreCards={() => <Text style={{ fontWeight: '700', fontSize: 18, color: 'gray' }}>No more cards :(</Text>}
@@ -143,17 +139,13 @@ export default class HomeScreen extends Component {
             <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
               this.swiper.swipeLeft();
             }}>
-              <Text>Red</Text>
+              <Text>noo :(</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.orange]} onPress={() => {
-              this.swiper.goBackFromLeft();
-            }}>
-              <Text>blue</Text>  
-            </TouchableOpacity>
+            
             <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
               this.swiper.swipeRight();
             }}>
-              <Text>Blue</Text>  
+              <Text>yaaas :)</Text>  
             </TouchableOpacity>
           </View>
  

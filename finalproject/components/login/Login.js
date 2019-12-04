@@ -5,6 +5,7 @@ import firebase from 'firebase'
 export default class LoginScreen extends React.Component {
     state = { email: '', password: '', errorMessage: null }
     handleLogin = () => {
+       //this.props.navigation.navigate('Main')
         const { email, password } = this.state
         firebase.auth()
         .signInWithEmailAndPassword(email, password)
@@ -34,11 +35,11 @@ export default class LoginScreen extends React.Component {
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             />
-            <Button title="Login" onPress={this.handleLogin} />
-            <Button
-            title="Don't have an account? Sign Up"
-            onPress={() => this.props.navigation.navigate('SignUp')}
-            />
+              <Button title="Login" onPress={this.handleLogin} />
+              <Button
+              title="Don't have an account? Sign Up"
+              onPress={() => this.props.navigation.navigate('SignUp')}
+              />
         </View>
         )
     }
@@ -55,5 +56,5 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
-  }
+  },
 })
