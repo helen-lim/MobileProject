@@ -34,7 +34,7 @@ export default function LikedScreen(props) {
             <ScrollView style={{ width: '100%', height: 400,}} >
             {unseenMemes.filter((meme) => {
                 for(var i in meme.liked) {
-                  if(meme.liked[i] == currentUser.uid) {
+                  if(meme.liked[i] == (currentUser && currentUser.uid)) {
                     return true
                   }
                 }

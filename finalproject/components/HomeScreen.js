@@ -154,13 +154,13 @@ export default class HomeScreen extends Component {
         >
           {this.state.unseenMemes.filter((meme) => {
             for(var i in meme.seen) {
-              if(meme.seen[i] == this.state.currentUser.uid) {
+              if(meme.seen[i] == (this.state.currentUser && this.state.currentUser.uid)) {
                 return false
               }
             }
             return true
           }).map((meme, index) => (
-            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.dislikeMeme(meme.uid, this.state.currentUser.uid)} onSwipedRight={() => this.likeMeme(meme.uid, this.state.currentUser.uid) }>
+            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.dislikeMeme(meme.uid, this.state.currentUser && this.state.currentUser.uid)} onSwipedRight={() => this.likeMeme(meme.uid, this.state.currentUser && this.state.currentUser.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
               <Text style={styles.memeText}>{meme.name}</Text>
             </Card>
