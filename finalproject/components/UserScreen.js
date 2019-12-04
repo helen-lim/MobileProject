@@ -40,7 +40,7 @@ export default function UserScreen(props) {
   }
 
   onChooseCameraPress = async () => {
-    const { status } = await Permissions.getAsync(Permissions.CAMERA);
+    const { status, permissions } = await Permissions.askAsync(Permissions.CAMERA);
     if (status == 'granted') {
       let result = await ImagePicker.launchCameraAsync();
       let test = '1';
@@ -61,18 +61,21 @@ export default function UserScreen(props) {
   }
 
   onChooseImagePress = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync();
-    let test = '1';
+    const { status, permissions } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status == 'granted') {
+      let result = await ImagePicker.launchImageLibraryAsync();
+      let test = '1';
 
-    if(!result.cancelled) {
-      this.uploadImage(result.uri, submitName)
-      .then((snapshot) => {
-        snapshot.ref.getDownloadURL().then((url) => {
-          this.writeMemeData(currentUser && currentUser.uid, [], url, submitName, []);
-          console.log(test);
-          Alert.alert('Upload successful!');
+      if(!result.cancelled) {
+        this.uploadImage(result.uri, submitName)
+        .then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((url) => {
+            this.writeMemeData(currentUser && currentUser.uid, [], url, submitName, []);
+            console.log(test);
+            Alert.alert('Upload successful!');
+          })
         })
-      })
+      }
     }
   }
   
