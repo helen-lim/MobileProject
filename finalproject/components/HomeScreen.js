@@ -22,6 +22,7 @@ export default class HomeScreen extends Component {
     this._toggle();
 
     this.setState({ currentUser: firebase.auth().currentUser})
+
     database.ref('memes/').on('value', function(snapshot) {
       let parseObject = snapshot.val();
       var result = [];
@@ -64,6 +65,22 @@ export default class HomeScreen extends Component {
     this._subscription && this._subscription.remove();
     this._subscription = null;
   };
+
+  likeMeme = async (name, user) => {
+    var result = [];
+    database.ref('memes/' + name + '/liked').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      };
+    })
+    result.push(user)
+    var likedRef = database.ref('memes/' + name + '/liked');
+    likedRef.set(result);
+  }
+
+  dislikeMeme = async (name) => {
+  }
  
   render() {
     let data = this.state.deviceMotionData;
@@ -85,6 +102,7 @@ export default class HomeScreen extends Component {
           }}
           onSwiped={() => console.log('onSwiped')}
           onSwipedLeft={() => console.log('onSwipedLeft')}
+          onSwipedRight={() => console.log('onSwipedRight')}
         >
           {this.state.unseenMemes.filter((meme) => {
             for(var i in meme.seen) {
@@ -94,7 +112,10 @@ export default class HomeScreen extends Component {
             }
             return true
           }).map((meme, index) => (
-            <Card pic={meme.link} title={meme.name} style={[styles.card, styles.card1]} onSwipedLeft={() => alert('onSwipedLeft')}></Card>
+            <Card style={[styles.card, styles.card1]} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid)) }>
+              <Image style={styles.listimage} source={{uri : meme.link }}/>
+              <Text>{meme.name}</Text>
+            </Card>
           ))}
         </CardStack>
  
@@ -212,5 +233,11 @@ const styles = StyleSheet.create({
     borderRadius:75,
     borderWidth:6,
     borderColor:'#fd267d',
-  }
+  },
+  listimage: {
+    flex: 1,
+    alignSelf: 'stretch',
+    width: 320,
+    height: 470,
+  },
 });
