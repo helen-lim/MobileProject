@@ -34,4 +34,6 @@ target 'finalproject' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'RNSensors', :path => '../node_modules/react-native-sensors'
+
 end
