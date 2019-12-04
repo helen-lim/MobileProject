@@ -149,7 +149,7 @@ export default class HomeScreen extends Component {
             }
             return true
           }).map((meme, index) => (
-            <Card style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
+            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
               <Text>{meme.name}</Text>
             </Card>

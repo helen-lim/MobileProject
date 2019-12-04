@@ -39,7 +39,7 @@ export default function LikedScreen(props) {
                 }
                 return false
               }).map((meme, index) => (
-                <View style={styles.subcontainer3}>
+                <View key={index} style={styles.subcontainer3}>
                   <Memecard uri={meme.link} name={meme.name}/>
                 </View>
               ))}
