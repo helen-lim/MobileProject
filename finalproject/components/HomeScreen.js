@@ -30,6 +30,7 @@ export default class HomeScreen extends Component {
         result.push(parseObject[i]);
       }
       this.setState({ unseenMemes: result });
+      console.log("ComponentDidMount(): unseenMemes: [] succesfully updated");
     }.bind(this), function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
@@ -170,12 +171,14 @@ export default class HomeScreen extends Component {
         <View style={styles.footer}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
+              console.log("Touched Dislike");
               this.swiper.swipeLeft();
             }}>
               <Text style = {styles.buttonTextStyle}>noo :(</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
+              console.log("Touched Like");
               this.swiper.swipeRight();
             }}>
               <Text style = {styles.buttonTextStyle}>yaaas :)</Text>  

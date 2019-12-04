@@ -62,7 +62,6 @@ export default class MapScreen extends React.Component {
               result.push(parseObject[i]);
             }
             this.setState({ memes: result });
-            console.log(this.state.memes)
         }.bind(this), function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         })
