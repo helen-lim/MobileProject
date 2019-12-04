@@ -16,7 +16,7 @@ const Layout = {
 
 export const Card = ({ pic, title, caption }) => (
   <Tile
-    imageSrc={pic}
+    imageSrc={{ uri: pic }}
     imageContainerStyle={styles.imageContainer}
     activeOpacity={0.9}
     title={title}
