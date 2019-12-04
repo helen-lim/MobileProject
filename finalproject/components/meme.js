@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
         height:300,
     },
     textstyle: {
-      fontFamily : 'sans-serif-medium',
       fontSize : 15,
       fontStyle : 'italic',
       color : '#423D39',

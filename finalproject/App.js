@@ -141,13 +141,11 @@ const styles = StyleSheet.create({
     top: -1.5,
   },
   shadow: {
-    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#FF8119',
   },
   text : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#423D39',

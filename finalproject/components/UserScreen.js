@@ -251,7 +251,6 @@ const styles = StyleSheet.create({
     top: 8,
   },
   submitButtonText : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 15,
     fontStyle : 'italic',
     color : '#423D39',
@@ -268,7 +267,6 @@ const styles = StyleSheet.create({
     top: 10,
   },
   submitText : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 18,
     fontStyle : 'italic',
     color : '#423D39',
@@ -297,7 +295,6 @@ const styles = StyleSheet.create({
     height: 35,
   },
   userText: {
-    fontFamily : 'sans-serif-medium',
     fontSize : 25,
     fontStyle : 'italic',
     color : '#423D39',
@@ -316,7 +313,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#D7823B',
   },
   logoutButtonText : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 20,
     fontStyle : 'italic',
     color : '#423D39',
@@ -324,136 +320,3 @@ const styles = StyleSheet.create({
     textAlign : 'center'
   },
 })
-
-{/* 
-
-<View style={style.submissionsContainer}>
-  <Text style={styles.submissionsText}>your submissions</Text>
-  <View style={style.submissionsScrollView}>
-     <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-      {submittedMemes.filter((meme) => {
-        return meme.creator == (currentUser && currentUser.uid)
-      }).map((meme, index) => (
-        <View style={styles.subcontainer3}>
-          <Memecard uri={meme.link} name={meme.name}/>
-        </View>
-      ))}
-    </ScrollView>
-  </View>
-</View> */}
-
-//   return (
-//       <View style={styles.container}>
-//         <View>
-//           <View style={styles.subcontainer4}>
-//             <View style={styles.subcontainer5}>
-//               <TouchableOpacity onPress={this.onChooseImagePress}>
-//                 <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
-//               </TouchableOpacity>
-//               <TouchableOpacity onPress={this.onChooseCameraPress}>
-//                 <Image style={styles.logo} source={require('../assets/camerabutton.png')} />
-//               </TouchableOpacity>
-//             </View>
-//             <Text style={styles.buttonText}>
-//               Upload new memes
-//             </Text>
-//             <TextInput
-//               style={styles.textinputbox}
-//               onChangeText={text => onChangeText(text)}
-//               value={submitName}
-//             />
-//           </View>
-//         </View>
-//         <View style={styles.subcontainer1}>
-//           <Text style={styles.paragraph}>
-//             Submitted Memes
-//           </Text>
-//           <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-//             {submittedMemes.filter((meme) => {
-//               return meme.creator == (currentUser && currentUser.uid)
-//             }).map((meme, index) => (
-//               <View style={styles.subcontainer3}>
-//                 <Memecard uri={meme.link} name={meme.name}/>
-//               </View>
-//             ))}
-//           </ScrollView>
-//         </View>
-//       </View>
-//   );
-// }
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'space-around',
-//     width: '100%',
-//   },
-//   subcontainer1: {
-//     flex: 1,
-//     justifyContent: 'flex-start',
-//     alignItems: 'center',
-//   },  
-//   subcontainer3: {
-//     flex: 1,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//     width: '100%',
-//   }, 
-//   listimage: {
-//     flex: 1,
-//     alignSelf: 'stretch',
-//     width: 300,
-//     height:300,
-//   },
-//   header:{
-//     height: 60,
-//     width: '100%',
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#87ceeb',
-//   },
-//   headertext: {
-//     fontSize: 18,
-//     letterSpacing: 2,
-//     color: '#414a4e',
-//     fontWeight: 'bold',
-//   },
-//   paragraph: {
-//     marginTop: 24,
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//   },
-//   subcontainer4: {
-//     alignItems: 'center',
-//     justifyContent: 'flex-start',
-//     padding: 20,
-//     height: '34%',
-//   },
-//   subcontainer5: {
-//     flexDirection: 'row',
-//     alignContent: 'space-around',
-//     justifyContent: 'space-around',
-//     width: '100%',
-//     marginBottom: '2%',
-//   }, 
-//   buttonText: {
-//     fontSize: 14,
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//   },
-//   logo: {
-//     height: 128,
-//     width: 128,
-//     backgroundColor: '#e6eaec',
-//   },
-//   textinputbox: { 
-//     height: 40, 
-//     width: '60%', 
-//     marginTop: 10, 
-//     borderColor: 'gray', 
-//     borderWidth: 1 
-//   }
-// });

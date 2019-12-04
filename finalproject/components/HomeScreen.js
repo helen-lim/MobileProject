@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
   memeText : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 15,
     fontStyle : 'italic',
     color : '#423D39',
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
     textAlign : 'center'
   },
   buttonTextStyle : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 15,
     fontStyle : 'italic',
     color : '#423D39',
