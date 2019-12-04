@@ -30,12 +30,14 @@ export default function UserScreen(props) {
   writeMemeData = async (creator, liked, link, name, tags) => {
     var memesRef = database.ref('memes/');
     var newMemeRef = memesRef.push();
+    var uid = newMemeRef.key;
     return newMemeRef.set({
       creator,
       liked,
       link,
       name,
-      tags
+      tags, 
+      uid
     })
   }
 

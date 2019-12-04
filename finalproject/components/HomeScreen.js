@@ -66,20 +66,39 @@ export default class HomeScreen extends Component {
     this._subscription = null;
   };
 
-  likeMeme = async (name, user) => {
+  likeMeme = async (name, user, uid) => {
     var result = [];
-    database.ref('memes/' + name + '/liked').on('value', function(snapshot) {
+    database.ref('memes/' + uid + '/liked').on('value', function(snapshot) {
       let parseObject = snapshot.val();
       for(var i in parseObject) {
         result.push(parseObject[i]);
       };
     })
     result.push(user)
-    var likedRef = database.ref('memes/' + name + '/liked');
+    var likedRef = database.ref('memes/' + uid + '/liked');
     likedRef.set(result);
+
+    database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      };
+    })
+    result.push(user)
+    var seenRef = database.ref('memes/' + uid + '/seen');
+    seenRef.set(result);
   }
 
-  dislikeMeme = async (name) => {
+  dislikeMeme = async (name, user, uid) => {
+    database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
+      let parseObject = snapshot.val();
+      for(var i in parseObject) {
+        result.push(parseObject[i]);
+      };
+    })
+    result.push(user)
+    var seenRef = database.ref('memes/' + uid + '/seen');
+    seenRef.set(result);
   }
  
   render() {
@@ -112,7 +131,7 @@ export default class HomeScreen extends Component {
             }
             return true
           }).map((meme, index) => (
-            <Card style={[styles.card, styles.card1]} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid)) }>
+            <Card style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
               <Text>{meme.name}</Text>
             </Card>
