@@ -38,14 +38,47 @@ export default function UserScreen(props) {
     var memesRef = database.ref('memes/');
     var newMemeRef = memesRef.push();
     var uid = newMemeRef.key;
-    return newMemeRef.set({
-      creator,
-      liked,
-      link,
-      name,
-      tags, 
-      uid
-    })
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+
+        // current location of device
+        var coordinate = {
+          latitude: position.coords.latitude, 
+          longitude: position.coords.longitude
+        }
+        // save meme to Firebase
+        newMemeRef.set({
+          creator,
+          liked,
+          link,
+          name,
+          tags, 
+          uid,
+          coordinate
+        })
+        console.log(coordinate);
+      },
+      (error) => { 
+        console.log("ERROR: " + error.message)
+        
+        // Madison Bowl, Charlottesville, VA
+        var coordinate = {
+          latitude: 38.0377,
+          longitude: 78.5024
+        }
+        // save meme to Firebase
+        newMemeRef.set({
+          creator,
+          liked,
+          link,
+          name,
+          tags, 
+          uid,
+          coordinate
+        })
+      },
+      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
+    )
   }
 
   onChooseCameraPress = async () => {
@@ -164,7 +197,7 @@ export default function UserScreen(props) {
             {submittedMemes.filter((meme) => {
               return meme.creator == (currentUser && currentUser.uid)
             }).map((meme, index) => (
-              <View style={styles.subcontainer3}>
+              <View key={index} style={styles.subcontainer3}>
                 <Memecard uri={meme.link} name={meme.name}/>
               </View>
             ))}

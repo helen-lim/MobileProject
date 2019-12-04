@@ -70,8 +70,14 @@ export default class HomeScreen extends Component {
     var result = [];
     database.ref('memes/' + uid + '/liked').on('value', function(snapshot) {
       let parseObject = snapshot.val();
+      var exists = false;
       for(var i in parseObject) {
-        result.push(parseObject[i]);
+        if(parseObject[i] == user){
+          exists = true;
+        }
+        if(exists == false){
+          result.push(parseObject[i]);
+        }
       };
     })
     result.push(user)
@@ -80,8 +86,14 @@ export default class HomeScreen extends Component {
 
     database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
       let parseObject = snapshot.val();
+      var exists = false;
       for(var i in parseObject) {
-        result.push(parseObject[i]);
+        if(parseObject[i] == user){
+          exists = true;
+        }
+        if(exists == false){
+          result.push(parseObject[i]);
+        }
       };
     })
     result.push(user)
@@ -92,8 +104,14 @@ export default class HomeScreen extends Component {
   dislikeMeme = async (name, user, uid) => {
     database.ref('memes/' + uid + '/seen').on('value', function(snapshot) {
       let parseObject = snapshot.val();
+      var exists = false;
       for(var i in parseObject) {
-        result.push(parseObject[i]);
+        if(parseObject[i] == user){
+          exists = true;
+        }
+        if(exists == false){
+          result.push(parseObject[i]);
+        }
       };
     })
     result.push(user)
@@ -127,7 +145,7 @@ export default class HomeScreen extends Component {
             }
             return true
           }).map((meme, index) => (
-            <Card style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
+            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
               <Text style={styles.memeText}>{meme.name}</Text>
             </Card>
