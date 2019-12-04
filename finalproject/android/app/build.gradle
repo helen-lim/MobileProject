@@ -139,6 +139,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-share')
+    implementation project(':react-native-vector-icons')
     compile project(':react-native-view-overflow')
     implementation project(':react-native-view-overflow')
     implementation project(':react-native-screens')
