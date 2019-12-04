@@ -16,11 +16,13 @@ import LoadingScreen from './components/login/Loading'
 import SignUpScreen from './components/login/SignUp'
 import LoginScreen from './components/login/Login'
 import firebase from 'firebase'
+import MapScreen from './components/MapScreen';
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen },
   Home: { screen: HomeScreen },
   Liked: { screen: LikedScreen },
+  Map: { screen: MapScreen },
   },{
     initialRouteName: 'Home',
     tabBarOptions: {
