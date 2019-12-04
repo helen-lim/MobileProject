@@ -28,13 +28,13 @@ export default function LikedScreen(props) {
       <View style={styles.container}>
         <View style={styles.submitContainer2}>
           <View style = {styles.submitTextContainer}>
-            <Text style = {styles.submitText}>memes that have brought you joy</Text>
+            <Text style = {styles.submitText}>Memes that have brought you joy</Text>
           </View>
           <View style = {styles.submissionsBox}>
             <ScrollView style={{ width: '100%', height: 400,}} >
             {unseenMemes.filter((meme) => {
                 for(var i in meme.liked) {
-                  if(meme.liked[i] == (currentUser && currentUser.uid)){
+                  if(meme.liked[i] == currentUser.uid) {
                     return true
                   }
                 }
