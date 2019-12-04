@@ -46,9 +46,11 @@ const styles = StyleSheet.create({
         height:300,
     },
     textstyle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      alignSelf: 'center',
-      margin: '3%',
+      fontFamily : 'sans-serif-medium',
+      fontSize : 15,
+      fontStyle : 'italic',
+      color : '#423D39',
+  
+      textAlign : 'center'
     }
 });
