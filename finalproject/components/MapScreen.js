@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { Text, Button, View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { database } from './Firebase';
 import memoize from 'memoize-one';
 
 
@@ -14,7 +15,8 @@ export default class MapScreen extends React.Component {
 
     state = {
         latitude: 38.0377,
-        longitude: 78.5024
+        longitude: 78.5024,
+        memes: []
     }
 
     // Constants
@@ -39,7 +41,8 @@ export default class MapScreen extends React.Component {
                     longitudeDelta: this.longitudeDelta,
                 }, 500);
 
-                console.log(this.state);
+                console.log("Latitude: " + this.state.latitude);
+                console.log("Longitude: " + this.state.longitude);
             },
             (error) => { 
                 console.log("ERROR: " + error.message) 
@@ -47,6 +50,23 @@ export default class MapScreen extends React.Component {
             { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
         );
     })
+
+    /**
+     * Used to fetch memes from Firebase
+     */
+    componentDidMount() {
+        database.ref('memes/').on('value', function(snapshot) {
+            let parseObject = snapshot.val();
+            var result = [];
+            for(var i in parseObject) {
+              result.push(parseObject[i]);
+            }
+            this.setState({ memes: result });
+            console.log(this.state.memes)
+        }.bind(this), function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        })
+    }
 
     render() {
         return (
@@ -63,7 +83,15 @@ export default class MapScreen extends React.Component {
                             latitudeDelta: this.latitudeDelta,
                             longitudeDelta: this.longitudeDelta,
                         }}
-                    />
+                    >
+                        {this.state.memes.map((meme, index) => ( 
+                            <Marker 
+                                key={index} 
+                                title={meme.name}
+                                coordinate={meme.coordinate} 
+                            /> 
+                        ))}
+                    </MapView>
                 </View>
                 <View>
                     <Button
