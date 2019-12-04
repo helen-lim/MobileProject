@@ -7,6 +7,13 @@ import firebase from 'firebase'
 import Memecard from './meme'
 import * as Permissions from 'expo-permissions';
 
+// To-do: Reem Kufi font 
+// componentDidMount() {
+//   Font.loadAsync({
+//     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+//   });
+// }
+
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);

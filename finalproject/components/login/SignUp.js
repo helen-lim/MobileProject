@@ -13,7 +13,7 @@ export default class SignUpScreen extends React.Component {
     render() {
         return (
         <View style={styles.container}>
-            <Text>Sign Up</Text>
+            <Text>Create an Account</Text>
             {this.state.errorMessage &&
             <Text style={{ color: 'red' }}>
                 {this.state.errorMessage}
