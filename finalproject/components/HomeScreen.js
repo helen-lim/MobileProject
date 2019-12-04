@@ -127,10 +127,6 @@ export default class HomeScreen extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
-        <View style = {{flex:1, justifyContent:'center', alignItems:'center', width: 300, height: 100, }}><Text>
-          Orientation: 
-        </Text>
-        </View>
         <CardStack
           style={styles.content}
           renderNoMoreCards={() => <Text style={{ fontWeight: '700', fontSize: 18, color: 'gray' }}>No more cards :(</Text>}
@@ -151,7 +147,7 @@ export default class HomeScreen extends Component {
           }).map((meme, index) => (
             <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid)} onSwipedRight={() => this.likeMeme(meme.name, (this.state.currentUser && this.state.currentUser.uid), meme.uid) }>
               <Image style={styles.listimage} source={{uri : meme.link }}/>
-              <Text>{meme.name}</Text>
+              <Text style={styles.memeText}>{meme.name}</Text>
             </Card>
           ))}
         </CardStack>
@@ -161,17 +157,13 @@ export default class HomeScreen extends Component {
             <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
               this.swiper.swipeLeft();
             }}>
-              <Text>Red</Text>
+              <Text style = {styles.buttonTextStyle}>noo :(</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.orange]} onPress={() => {
-              this.swiper.goBackFromLeft();
-            }}>
-              <Text>blue</Text>  
-            </TouchableOpacity>
+            
             <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
               this.swiper.swipeRight();
             }}>
-              <Text>Blue</Text>  
+              <Text style = {styles.buttonTextStyle}>yaaas :)</Text>  
             </TouchableOpacity>
           </View>
  
@@ -194,6 +186,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f2f2f2',
   },
+  memeText : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
+  buttonTextStyle : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
   content:{
     flex: 5,
     alignItems: 'center',
@@ -202,7 +210,7 @@ const styles = StyleSheet.create({
   card:{
     width: 320,
     height: 470,
-    backgroundColor: '#FE474C',
+    backgroundColor: '#F5B988',
     borderRadius: 5,
     shadowColor: 'rgba(0,0,0,0.5)',
     shadowOffset: {
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
     shadowOpacity:0.5,
   },
   card1: {
-    backgroundColor: '#FE474C',
+    backgroundColor: '#F5B988',
   },
   card2: {
     backgroundColor: '#FEB12C',

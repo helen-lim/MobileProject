@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import firebase from 'firebase'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export default class SignUpScreen extends React.Component {
     state = { email: '', password: '', errorMessage: null }
@@ -13,11 +14,16 @@ export default class SignUpScreen extends React.Component {
     render() {
         return (
         <View style={styles.container}>
-            <Text>Sign Up</Text>
+          <View style={styles.signupTextContainer}>
+            <Text style={styles.signupText}>Create an Account</Text>
             {this.state.errorMessage &&
-            <Text style={{ color: 'red' }}>
+            <Text style={{ color: 'red', textAlign : 'center'}}>
                 {this.state.errorMessage}
             </Text>}
+          </View>
+
+
+          <View style = {styles.textInputContainer}>
             <TextInput
             placeholder="Email"
             autoCapitalize="none"
@@ -33,20 +39,66 @@ export default class SignUpScreen extends React.Component {
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             />
-            <Button title="Sign Up" onPress={this.handleSignUp} />
-            <Button
+          </View>
+          
+          <View style = {styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.handleSignUp}>
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
             title="Already have an account? Login"
-            onPress={() => this.props.navigation.navigate('Login')}
-            />
+            onPress={() => this.props.navigation.navigate('Login')}>
+              <Text>Already have an account? Log in</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         )
     }
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  buttonText :{
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'normal',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
+  buttonStyle: {
+    height: 30,
+    justifyContent : 'center',
+    backgroundColor : '#FF831D'
+  },
+  buttonContainer : {
+    top : '45%',
+    flexDirection : 'column',
+    height: 100,
+    justifyContent : 'space-evenly'
+
+  },
+  textInputContainer : {
+    flexDirection : 'column',
+    width : '90%',
+    alignItems : 'center',
+    top: '30%'
+  },
+  signupTextContainer : {
+    height : 30,
+    width: '100%',
+    top: '20%',
+  },
+  signupText : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 20,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+
   },
   textInput: {
     height: 40,

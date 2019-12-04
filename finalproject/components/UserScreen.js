@@ -7,10 +7,17 @@ import firebase from 'firebase'
 import Memecard from './meme'
 import * as Permissions from 'expo-permissions';
 
+// To-do: Reem Kufi font 
+// componentDidMount() {
+//   Font.loadAsync({
+//     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+//   });
+// }
+
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
-  const [submitName, onChangeText] = useState('Meme Name');
+  const [submitName, onChangeText] = useState('enter a memetastic title');
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {    
@@ -95,6 +102,24 @@ export default function UserScreen(props) {
     }
   }
 
+  // onChooseImagePress = async () => {
+  //   const { status, permissions } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  //   if (status == 'granted') {
+  //     let result = await ImagePicker.launchImageLibraryAsync();
+  //     let test = '1';
+
+  //     if(!result.cancelled) {
+  //       this.uploadImage(result.uri, submitName)
+  //       .then((snapshot) => {
+  //         snapshot.ref.getDownloadURL().then((url) => {
+  //           this.writeMemeData(currentUser && currentUser.uid, [], url, submitName, []);
+  //           console.log(test);
+  //           Alert.alert('Upload successful!');
+  //         })
+  //       })
+  //     }
+  //   }
+  // }
   onChooseImagePress = async () => {
     const { status, permissions } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status == 'granted') {
@@ -113,7 +138,6 @@ export default function UserScreen(props) {
       }
     }
   }
-  
 
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
@@ -125,33 +149,51 @@ export default function UserScreen(props) {
     return ref.put(blob)
   }
 
+  
   return (
-      <View style={styles.container}>
-        <View>
-          <View style={styles.subcontainer4}>
-            <View style={styles.subcontainer5}>
-              <TouchableOpacity onPress={this.onChooseImagePress}>
-                <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.onChooseCameraPress}>
-                <Image style={styles.logo} source={require('../assets/camerabutton.png')} />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.buttonText}>
-              Upload new memes
-            </Text>
-            <TextInput
-              style={styles.textinputbox}
-              onChangeText={text => onChangeText(text)}
-              value={submitName}
-            />
-          </View>
+    <View style={{flex:1, flexDirection: 'column'}}>
+      <View style={styles.userContainer}>
+        <View style={styles.userTextContainer}>
+          <Text style={styles.userText}>your page</Text>
         </View>
-        <View style={styles.subcontainer1}>
-          <Text style={styles.paragraph}>
-            Submitted Memes
-          </Text>
-          <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+        <View style = {styles.logoutButtonContainer}>
+          <TouchableOpacity   onPress={() => 
+              firebase.auth().signOut()
+              .then(function() {
+                // Sign-out successful.
+              })
+              .catch(function(error) {
+                // An error happened
+              })}>
+              <View style={styles.logoutButtonTextContainer}>
+                <Text style={styles.logoutButtonText}>logout</Text>
+              </View>
+            </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style = {styles.submitTextContainer}>
+       <Text style = {styles.submitText}>contribute to the meme cloud</Text>
+      </View>
+      <View style={styles.submitContainer}>
+        <View style = {styles.submitButtonContainer1}>
+          <TouchableOpacity onPress={this.onChooseImagePress}>
+              <Image style = {styles.uploadButton} source={require('../assets/upload.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onChooseCameraPress}>
+              <Image style = {styles.uploadButton} source={require('../assets/camera.png')} />
+            </TouchableOpacity>
+        </View>
+        <TextInput style = {styles.submitUserText} onChangeText={text=>onChangeText(text)} value={submitName} />
+
+      </View>
+
+      <View style={styles.submitContainer2}>
+        <View style = {styles.submitTextContainer}>
+          <Text style = {styles.submitText}>your contributions</Text>
+        </View>
+        <View style = {styles.submissionsBox}>
+          <ScrollView style={{ width: '100%', height: 400,}} >
             {submittedMemes.filter((meme) => {
               return meme.creator == (currentUser && currentUser.uid)
             }).map((meme, index) => (
@@ -159,84 +201,259 @@ export default function UserScreen(props) {
                 <Memecard uri={meme.link} name={meme.name}/>
               </View>
             ))}
-          </ScrollView>
+      </ScrollView>
         </View>
       </View>
+
+
+    </View>
+
   );
 }
-
-
+/*
+deleted submit button 
+        <TouchableOpacity onPress={this.submitImage}>
+          <View style = {styles.submitButton}>
+            <Text style = {styles.submitButtonText}>submit</Text>
+          </View>
+        </TouchableOpacity>
+*/
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  userContainer :{
     justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: '10%',
     width: '100%',
   },
-  subcontainer1: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },  
   subcontainer3: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
   }, 
-  listimage: {
-    flex: 1,
-    alignSelf: 'stretch',
+  submissionsBox : {
+    width: '80%',
+    height : '100%',
+    borderWidth : 4,
+    borderColor : '#707A7E',
+    borderStyle: 'solid',
+  },
+  submitContainer2 : {
+    flexDirection : 'column',
+    alignItems: 'center',
+    width: '100%',
+    height: '60%',
+  },
+  submitButton : {
+    width: 100,
+    height: 31,
+    top: 8,
+  },
+  submitButtonText : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
+  submitUserText : {
+    width: 176,
+    height: 31,
+  },
+  submitTextContainer : {
     width: 300,
-    height:300,
+    height: 38,
+    top: 10,
   },
-  header:{
-    height: 60,
+  submitText : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 18,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
+  submitContainer : {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#87ceeb',
+    height: '15%',
+
+    flexDirection : 'row',
+    justifyContent : 'space-around',
   },
-  headertext: {
-    fontSize: 18,
-    letterSpacing: 2,
-    color: '#414a4e',
-    fontWeight: 'bold',
+  submitButtonContainer1 : {
+    width: 90, 
+    height: 30,
+    flexDirection : 'row',
+    justifyContent : 'space-evenly',
   },
-  paragraph: {
-    marginTop: 24,
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  uploadButton : {
+    width:30,
+    height: 30,
   },
-  subcontainer4: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 20,
-    height: '34%',
+  userTextContainer : {
+    width: 150,
+    height: 35,
   },
-  subcontainer5: {
-    flexDirection: 'row',
-    alignContent: 'space-around',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginBottom: '2%',
-  }, 
-  buttonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  userText: {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 25,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
   },
-  logo: {
-    height: 128,
-    width: 128,
-    backgroundColor: '#e6eaec',
+  logoutButtonContainer : {
+    width: 105,
+    height: 25,
+
   },
-  textinputbox: { 
-    height: 40, 
-    width: '60%', 
-    marginTop: 10, 
-    borderColor: 'gray', 
-    borderWidth: 1 
-  }
-});
+  logoutButtonTextContainer : {
+    width: 105,
+    height: 25,
+    borderRadius : 10,
+    backgroundColor: '#D7823B',
+  },
+  logoutButtonText : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 20,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
+  },
+})
+
+{/* 
+
+<View style={style.submissionsContainer}>
+  <Text style={styles.submissionsText}>your submissions</Text>
+  <View style={style.submissionsScrollView}>
+     <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+      {submittedMemes.filter((meme) => {
+        return meme.creator == (currentUser && currentUser.uid)
+      }).map((meme, index) => (
+        <View style={styles.subcontainer3}>
+          <Memecard uri={meme.link} name={meme.name}/>
+        </View>
+      ))}
+    </ScrollView>
+  </View>
+</View> */}
+
+//   return (
+//       <View style={styles.container}>
+//         <View>
+//           <View style={styles.subcontainer4}>
+//             <View style={styles.subcontainer5}>
+//               <TouchableOpacity onPress={this.onChooseImagePress}>
+//                 <Image style={styles.logo} source={require('../assets/uploadbutton.png')} />
+//               </TouchableOpacity>
+//               <TouchableOpacity onPress={this.onChooseCameraPress}>
+//                 <Image style={styles.logo} source={require('../assets/camerabutton.png')} />
+//               </TouchableOpacity>
+//             </View>
+//             <Text style={styles.buttonText}>
+//               Upload new memes
+//             </Text>
+//             <TextInput
+//               style={styles.textinputbox}
+//               onChangeText={text => onChangeText(text)}
+//               value={submitName}
+//             />
+//           </View>
+//         </View>
+//         <View style={styles.subcontainer1}>
+//           <Text style={styles.paragraph}>
+//             Submitted Memes
+//           </Text>
+//           <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
+//             {submittedMemes.filter((meme) => {
+//               return meme.creator == (currentUser && currentUser.uid)
+//             }).map((meme, index) => (
+//               <View style={styles.subcontainer3}>
+//                 <Memecard uri={meme.link} name={meme.name}/>
+//               </View>
+//             ))}
+//           </ScrollView>
+//         </View>
+//       </View>
+//   );
+// }
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'space-around',
+//     width: '100%',
+//   },
+//   subcontainer1: {
+//     flex: 1,
+//     justifyContent: 'flex-start',
+//     alignItems: 'center',
+//   },  
+//   subcontainer3: {
+//     flex: 1,
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//     width: '100%',
+//   }, 
+//   listimage: {
+//     flex: 1,
+//     alignSelf: 'stretch',
+//     width: 300,
+//     height:300,
+//   },
+//   header:{
+//     height: 60,
+//     width: '100%',
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#87ceeb',
+//   },
+//   headertext: {
+//     fontSize: 18,
+//     letterSpacing: 2,
+//     color: '#414a4e',
+//     fontWeight: 'bold',
+//   },
+//   paragraph: {
+//     marginTop: 24,
+//     fontSize: 24,
+//     fontWeight: 'bold',
+//     textAlign: 'center',
+//   },
+//   subcontainer4: {
+//     alignItems: 'center',
+//     justifyContent: 'flex-start',
+//     padding: 20,
+//     height: '34%',
+//   },
+//   subcontainer5: {
+//     flexDirection: 'row',
+//     alignContent: 'space-around',
+//     justifyContent: 'space-around',
+//     width: '100%',
+//     marginBottom: '2%',
+//   }, 
+//   buttonText: {
+//     fontSize: 14,
+//     fontWeight: 'bold',
+//     textAlign: 'center',
+//   },
+//   logo: {
+//     height: 128,
+//     width: 128,
+//     backgroundColor: '#e6eaec',
+//   },
+//   textinputbox: { 
+//     height: 40, 
+//     width: '60%', 
+//     marginTop: 10, 
+//     borderColor: 'gray', 
+//     borderWidth: 1 
+//   }
+// });
