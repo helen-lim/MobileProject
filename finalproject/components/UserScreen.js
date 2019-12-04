@@ -121,7 +121,7 @@ export default function UserScreen(props) {
     <View style={{flex:1, flexDirection: 'column'}}>
       <View style={styles.userContainer}>
         <View style={styles.userTextContainer}>
-          <Text style={styles.userText}>memer</Text>
+          <Text style={styles.userText}>your page</Text>
         </View>
         <View style = {styles.logoutButtonContainer}>
           <TouchableOpacity   onPress={() => 
@@ -218,12 +218,12 @@ const styles = StyleSheet.create({
     top: 8,
   },
   submitButtonText : {
-    fontFamily: 'Roboto',
-    fontSize: 15,
-    lineHeight: 21,
-    textAlign: 'center',
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'italic',
+    color : '#423D39',
 
-    color: '#707A7E', 
+    textAlign : 'center'
   },
   submitUserText : {
     width: 176,
@@ -232,14 +232,15 @@ const styles = StyleSheet.create({
   submitTextContainer : {
     width: 300,
     height: 38,
+    top: 10,
   },
   submitText : {
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    lineHeight: 21,
-    textAlign: 'center',
+    fontFamily : 'sans-serif-medium',
+    fontSize : 18,
+    fontStyle : 'italic',
+    color : '#423D39',
 
-    color: '#707A7E', 
+    textAlign : 'center'
   },
   submitContainer : {
     width: '100%',
@@ -261,16 +262,14 @@ const styles = StyleSheet.create({
   userTextContainer : {
     width: 150,
     height: 35,
-
-    top: 5,
   },
   userText: {
-    fontFamily: 'Roboto',
-    fontSize: 24,
-    lineHeight: 21,
-    textAlign: 'center',
+    fontFamily : 'sans-serif-medium',
+    fontSize : 25,
+    fontStyle : 'italic',
+    color : '#423D39',
 
-    color: '#000000', 
+    textAlign : 'center'
   },
   logoutButtonContainer : {
     width: 105,
@@ -280,16 +279,16 @@ const styles = StyleSheet.create({
   logoutButtonTextContainer : {
     width: 105,
     height: 25,
-
-    backgroundColor: '#9BA8AE',
+    borderRadius : 10,
+    backgroundColor: '#D7823B',
   },
   logoutButtonText : {
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    lineHeight: 21,
-    textAlign: 'center',
+    fontFamily : 'sans-serif-medium',
+    fontSize : 20,
+    fontStyle : 'italic',
+    color : '#423D39',
 
-    color: '#000000', 
+    textAlign : 'center'
   },
 })
 

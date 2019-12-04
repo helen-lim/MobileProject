@@ -96,12 +96,12 @@ export default function LikedScreen(props) {
       height: 38,
     },
     submitText : {
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      lineHeight: 21,
-      textAlign: 'center',
+      fontFamily : 'sans-serif-medium',
+      fontSize : 20,
+      fontStyle : 'italic',
+      color : '#423D39',
   
-      color: '#707A7E', 
+      textAlign : 'center'
     },
   })
 /*

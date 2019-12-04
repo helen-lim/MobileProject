@@ -139,13 +139,13 @@ export default class HomeScreen extends Component {
             <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
               this.swiper.swipeLeft();
             }}>
-              <Text>noo :(</Text>
+              <Text style = {styles.buttonTextStyle}>noo :(</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
               this.swiper.swipeRight();
             }}>
-              <Text>yaaas :)</Text>  
+              <Text style = {styles.buttonTextStyle}>yaaas :)</Text>  
             </TouchableOpacity>
           </View>
  
@@ -167,6 +167,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#f2f2f2',
+  },
+  buttonTextStyle : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 15,
+    fontStyle : 'italic',
+    color : '#423D39',
+
+    textAlign : 'center'
   },
   content:{
     flex: 5,
