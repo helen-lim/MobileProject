@@ -5,11 +5,6 @@ import Constants from 'expo-constants';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import Carousel from 'simple-carousel-react-native';
-import { Card } from 'react-native-paper';
-import * as ImagePicker from 'expo-image-picker'; 
-import { storage, database } from './components/Firebase';
-import HomeScreen from './components/HomeScreen';
 import LikedScreen from './components/LikedScreen';
 import UserScreen from './components/UserScreen';
 import LoadingScreen from './components/login/Loading'
@@ -17,14 +12,13 @@ import SignUpScreen from './components/login/SignUp'
 import LoginScreen from './components/login/Login'
 import firebase from 'firebase'
 import MapScreen from './components/MapScreen';
-import RNCardStack from './components/RNCardStack';
+import BrowseScreen from './components/BrowseScreen';
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen },
-  Home: { screen: HomeScreen },
+  Home: { screen: BrowseScreen },
   Liked: { screen: LikedScreen },
   Map: { screen: MapScreen },
-  TEMP: { screen: RNCardStack },
   }, 
   {
     initialRouteName : 'Home',

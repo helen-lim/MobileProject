@@ -8,7 +8,7 @@ import {
 import Styles from './cards/Styles.js';
 import CardStack from './cards/CardStack.js';
 
-export default class RNCardStack extends Component {
+export default class BrowseScreen extends Component {
   render() {
     return (
       <View style={Styles.container}>
