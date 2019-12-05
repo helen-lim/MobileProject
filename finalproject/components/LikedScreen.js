@@ -28,13 +28,13 @@ export default function LikedScreen(props) {
       <View style={styles.container}>
         <View style={styles.submitContainer2}>
           <View style = {styles.submitTextContainer}>
-            <Text style = {styles.submitText}>Memes that have brought you joy</Text>
+            <Text style = {styles.submitText}>Memes that brought you joy</Text>
           </View>
           <View style = {styles.submissionsBox}>
             <ScrollView style={{ width: '100%', height: 400,}} >
             {unseenMemes.filter((meme) => {
-                for(var i in meme.liked) {
-                  if(meme.liked[i] == (currentUser && currentUser.uid)) {
+                for(var i in meme.likedBy) {
+                  if(meme.likedBy[i] == currentUser.uid) {
                     return true
                   }
                 }
@@ -52,8 +52,11 @@ export default function LikedScreen(props) {
   }
   const styles = StyleSheet.create({
     container :{
-      flex:1,
-      justifyContent : 'center'
+      flex: 1,
+      flexDirection: 'column',
+      marginTop: 30,
+      backgroundColor: '#f7f7f7',
+      alignItems: 'center',
     },
     subcontainer3: {
       flex: 1,
@@ -72,7 +75,7 @@ export default function LikedScreen(props) {
       flexDirection : 'column',
       alignItems: 'center',
       width: '100%',
-      height: '70%',
+      height: '90%',
     },
     submitButton : {
       width: 100,

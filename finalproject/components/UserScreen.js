@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
+import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; 
 import { storage, database } from './Firebase';
 import firebase from 'firebase'
 import Memecard from './meme'
 import * as Permissions from 'expo-permissions';
+import { TextInput } from 'react-native-paper';
 
 // To-do: Reem Kufi font 
 // componentDidMount() {
@@ -17,7 +18,7 @@ import * as Permissions from 'expo-permissions';
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
-  const [submitName, onChangeText] = useState('enter a memetastic title');
+  const [submitName, onChangeText] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {    
@@ -35,9 +36,18 @@ export default function UserScreen(props) {
   },[]);
 
   writeMemeData = async (creator, link, name) => {
+
+    // Firebase References
     var memesRef = database.ref('memes/');
     var newMemeRef = memesRef.push();
-    var uid = newMemeRef.key;
+    var memeID = newMemeRef.key;
+
+    // placeholders for later use
+    var dislikedBy = [];
+    var likedBy = [];
+    var seenBy = [];
+
+    // Fetch Device Location
     navigator.geolocation.getCurrentPosition(
       (position) => {
 
@@ -48,13 +58,15 @@ export default function UserScreen(props) {
         }
         // save meme to Firebase
         newMemeRef.set({
-          creator,
-          link,
           name,
-          uid,
-          coordinate
+          memeID,
+          link,
+          creator,
+          coordinate,
+          dislikedBy,
+          likedBy,
+          seenBy
         })
-        console.log(coordinate);
       },
       (error) => { 
         console.log("ERROR: " + error.message)
@@ -66,11 +78,14 @@ export default function UserScreen(props) {
         }
         // save meme to Firebase
         newMemeRef.set({
-          creator,
-          link,
           name,
-          uid,
-          coordinate
+          memeID,
+          link,
+          creator,
+          coordinate,
+          dislikedBy,
+          likedBy,
+          seenBy
         })
       },
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
@@ -87,8 +102,7 @@ export default function UserScreen(props) {
         this.uploadImage(result.uri, submitName)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
-            this.writeMemeData(currentUser && currentUser.uid, url, submitName);
-            console.log(test);
+            this.writeMemeData(currentUser.uid, url, submitName);
             Alert.alert('Upload successful!');
           })
         })
@@ -108,8 +122,7 @@ export default function UserScreen(props) {
         this.uploadImage(result.uri, submitName)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
-            this.writeMemeData(currentUser && currentUser.uid, url, submitName);
-            console.log(test);
+            this.writeMemeData(currentUser.uid, url, submitName);
             Alert.alert('Upload successful!');
           })
         })
@@ -121,7 +134,17 @@ export default function UserScreen(props) {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    var ref = storage.ref().child("images/" + imageName);
+    /**
+     * :::::::::VERY IMPORTANT:::::::::
+     * The way Firebase Storage works is that
+     * any image updated with the same "images/{imageName}"
+     * will overwrite the existing image in the database
+     * and thus any meme with a reference to that image.
+     * This was a huge pain in the ass and I can't believe I
+     * found the bug after all this time.
+     */
+    let uniqueImageIdentifier = Math.floor(Math.random() * 100) + 1;
+    var ref = storage.ref().child("images/" + (imageName + uniqueImageIdentifier));
     ref.put(blob)
 
     return ref.put(blob)
@@ -129,7 +152,7 @@ export default function UserScreen(props) {
 
   
   return (
-    <View style={{flex:1, flexDirection: 'column'}}>
+    <View style={{flex:1, flexDirection: 'column', backgroundColor: '#f7f7f7'}}>
       <View style={styles.userContainer}>
         <View style={styles.userTextContainer}>
           <Text style={styles.userText}>Your Profile</Text>
@@ -146,7 +169,7 @@ export default function UserScreen(props) {
               <View style={styles.logoutButtonTextContainer}>
                 <Text style={styles.logoutButtonText}>Logout</Text>
               </View>
-            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -154,6 +177,14 @@ export default function UserScreen(props) {
        <Text style = {styles.submitText}>Contribute to the Meme Cloud</Text>
       </View>
       <View style={styles.submitContainer}>
+        <TextInput
+          mode='outlined'
+          placeholder="Enter a memetastic title"
+          label='meme title'
+          onChangeText={text=>onChangeText(text)} 
+          value={submitName}
+          style={{width: '60%'}} 
+        />
         <View style = {styles.submitButtonContainer1}>
           <TouchableOpacity onPress={this.onChooseImagePress}>
               <Image style = {styles.uploadButton} source={require('../assets/upload.png')} />
@@ -162,7 +193,6 @@ export default function UserScreen(props) {
               <Image style = {styles.uploadButton} source={require('../assets/camera.png')} />
             </TouchableOpacity>
         </View>
-        <TextInput style = {styles.submitUserText} onChangeText={text=>onChangeText(text)} value={submitName} />
       </View>
 
       <View style={styles.submitContainer2}>
@@ -172,7 +202,7 @@ export default function UserScreen(props) {
         <View style = {styles.submissionsBox}>
           <ScrollView style={{ width: '100%', height: 400,}} >
             {submittedMemes.filter((meme) => {
-              return meme.creator == (currentUser && currentUser.uid);
+              return meme.creator == currentUser.uid;
             }).map((meme, index) => (
               <View key={index} style={styles.subcontainer3}>
                 <Memecard uri={meme.link} name={meme.name}/>
@@ -197,7 +227,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    height: '10%',
+    marginTop: 30,
     width: '100%',
   },
   subcontainer3: {
@@ -228,17 +258,18 @@ const styles = StyleSheet.create({
     fontSize : 15,
     fontStyle : 'italic',
     color : '#423D39',
-
     textAlign : 'center'
   },
   submitUserText : {
-    width: 176,
-    height: 31,
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1,
+    borderRadius: 10,
   },
   submitTextContainer : {
-    width: 300,
-    height: 38,
-    top: 10,
+    width: '100%',
+    height: 50,
+    top: 20,
   },
   submitText : {
     fontSize : 18,
@@ -250,19 +281,21 @@ const styles = StyleSheet.create({
   submitContainer : {
     width: '100%',
     height: '15%',
-
-    flexDirection : 'row',
+    flexDirection : 'column',
     justifyContent : 'space-around',
+    alignItems: 'center'
   },
   submitButtonContainer1 : {
-    width: 90, 
+    width: '35%', 
     height: 30,
+    marginTop: 5,
+    marginBottom: 5,
     flexDirection : 'row',
     justifyContent : 'space-evenly',
   },
   uploadButton : {
-    width:30,
-    height: 30,
+    width: 40,
+    height: 40,
   },
   userTextContainer : {
     width: 150,
@@ -290,7 +323,6 @@ const styles = StyleSheet.create({
     fontSize : 20,
     fontStyle : 'italic',
     color : '#423D39',
-
     textAlign : 'center'
   },
 })

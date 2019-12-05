@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { Text, Button, View, StyleSheet, Dimensions } from 'react-native';
+import { Text, Button, View, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { database } from './Firebase';
 import memoize from 'memoize-one';
@@ -92,12 +92,12 @@ export default class MapScreen extends React.Component {
                         ))}
                     </MapView>
                 </View>
-                <View>
-                    <Button
-                        title = "Current Location Button"
-                        onPress = {this.getCurrentLocation}
+                <TouchableOpacity onPress={this.getCurrentLocation} style={styles.currentLocationButton} >
+                    <Image
+                        style={styles.image}
+                        source={require('../assets/current-location-icon.png')}
                     />
-                </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -116,4 +116,15 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height - 40,
     },
+    currentLocationButton: {
+        position: 'absolute',
+        left: 10,
+        top: 10,
+    },
+    image: {
+        flex: 1,
+        width: 60,
+        height: 60,
+        resizeMode: 'contain'
+    }
 });
