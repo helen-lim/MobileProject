@@ -92,12 +92,6 @@ export default class MapScreen extends React.Component {
                         ))}
                     </MapView>
                 </View>
-                {/* <View style={styles.currentLocationButton}>
-                    <Button
-                        title = "Current Location Button"
-                        onPress = {this.getCurrentLocation}
-                    />
-                </View> */}
                 <TouchableOpacity onPress={this.getCurrentLocation} style={styles.currentLocationButton} >
                     <Image
                         style={styles.image}
