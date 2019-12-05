@@ -46,6 +46,9 @@ const TabNavigator = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#2a9d84',
       inactiveTintColor: '#264653',
+      style: {
+        backgroundColor: '#d1edf0'
+      } 
     },
   },
 
@@ -55,120 +58,20 @@ const HomeScreenStack = createStackNavigator({
     Loading: { screen: LoadingScreen },
     SignUp: { screen: SignUpScreen },
     Login: { screen: LoginScreen },
-    Main: { screen: TabNavigator,
-      navigationOptions: {
-        headerLeft: () => (
-          <Text style={{ color: '#495054' }}>Logout</Text>
-          // <Button
-          //   onPress={() => 
-          //     firebase.auth().signOut()
-          //     .then(function() {
-          //       // Sign-out successful.
-          //     })
-          //     .catch(function(error) {
-          //       // An error happened
-          //     })}
-          //   title="Logout"
-          // />
-        ),
-        headerRight: () => (
-          <Text style={{ color: '#495054' }}>Logout</Text>
-        ),
-      } 
-    }
+    Main: { screen: TabNavigator }
 }, {
     initialRouteName: 'Loading',
     defaultNavigationOptions: {
-      header: () => <HeaderStyle />
+      headerTitle: 'memes',
+      headerLeft: null, // removes back button
+      headerStyle: {backgroundColor: '#d1edf0'},
+      headerTitleStyle: {fontWeight: "300", fontSize: 20}
     },
 })
 
-class HeaderStyle extends React.Component {
-  render() {
-    return (
-        <View style = {styles.headerContainer}>
-          <View style = {styles.shadowContainer}>
-            <Text style = {styles.shadow}>
-              memes
-            </Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style = {styles.text}>
-              memes
-            </Text>
-          </View>
+const styles = StyleSheet.create({})
 
-          <View style={styles.imageContainer}>
-              <Image source={require('./assets/liked.png')} style = {styles.imageStyle} />
-          </View>
-        </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  headerContainer : {
-    justifyContent : 'center',
-    alignItems : 'center',
-    width : '100%',
-    height : '10%',
-    backgroundColor : '#F5B988',
-  },
-  textContainer : {
-
-  },
-  imageContainer : {
-    position: 'absolute',
-    left: 250,
-    top: 35
-
-  },
-  imageStyle : {
-    width: 25,
-    height: 26,
-  },
-  shadowContainer : {
-    position : 'absolute',
-    width: '100%',
-    height: '100%',
-    justifyContent : 'center',
-    alignItems : 'center',
-    left: -2,
-    top: -1.5,
-  },
-  shadow: {
-    fontSize : 35,
-    fontStyle : 'italic',
-    color : '#FF8119',
-  },
-  text : {
-    fontSize : 35,
-    fontStyle : 'italic',
-    color : '#423D39',
-  }
-})
-
-/*
-
-      title: 'memes',
-      headerTintColor: '#e3e8ea',
-      headerStyle: {
-        backgroundColor: '#495054',
-      },
-      headerTitleStyle: {
-        flex: 1, 
-        textAlign: 'center',
-        fontFamily: 'sans-serif-condensed',
-        fontStyle: 'italic',
-        fontSize: 30
-      },
-      headerLeft: () => (
-        <Text style={{ color: '#495054' }}>Logout</Text>
-      ),
-      headerRight: () => (
-        <Text style={{ color: '#495054' }}>Logout</Text>
-      ),
-*/
-
+/**
+ * Launch Point of Application
+ */
 export default createAppContainer(HomeScreenStack)
-//export default createAppContainer(TabNavigator);

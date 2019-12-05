@@ -168,7 +168,7 @@ export default function UserScreen(props) {
               <View style={styles.logoutButtonTextContainer}>
                 <Text style={styles.logoutButtonText}>Logout</Text>
               </View>
-            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
     fontSize : 15,
     fontStyle : 'italic',
     color : '#423D39',
-
     textAlign : 'center'
   },
   submitUserText : {
@@ -312,7 +311,6 @@ const styles = StyleSheet.create({
     fontSize : 20,
     fontStyle : 'italic',
     color : '#423D39',
-
     textAlign : 'center'
   },
 })
