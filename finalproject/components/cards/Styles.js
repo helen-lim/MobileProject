@@ -46,6 +46,14 @@ const Styles = StyleSheet.create({
     fontSize: 15,
     color: 'grey',
     backgroundColor: 'transparent'
+  },
+  sideColors: {
+    borderLeftColor: '#d67067',
+    borderRightColor: '#66d48b',
+    borderWidth: 6,
+    borderRadius: 10,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
   }
 });
 
