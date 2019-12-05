@@ -87,7 +87,7 @@ export default function UserScreen(props) {
         this.uploadImage(result.uri, submitName)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
-            this.writeMemeData(currentUser && currentUser.uid, url, submitName);
+            this.writeMemeData(currentUser.uid, url, submitName);
             console.log(test);
             Alert.alert('Upload successful!');
           })
@@ -108,7 +108,7 @@ export default function UserScreen(props) {
         this.uploadImage(result.uri, submitName)
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
-            this.writeMemeData(currentUser && currentUser.uid, url, submitName);
+            this.writeMemeData(currentUser.uid, url, submitName);
             console.log(test);
             Alert.alert('Upload successful!');
           })
@@ -172,7 +172,7 @@ export default function UserScreen(props) {
         <View style = {styles.submissionsBox}>
           <ScrollView style={{ width: '100%', height: 400,}} >
             {submittedMemes.filter((meme) => {
-              return meme.creator == (currentUser && currentUser.uid);
+              return meme.creator == currentUser.uid;
             }).map((meme, index) => (
               <View key={index} style={styles.subcontainer3}>
                 <Memecard uri={meme.link} name={meme.name}/>
