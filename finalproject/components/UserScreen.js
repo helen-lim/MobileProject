@@ -143,7 +143,7 @@ export default function UserScreen(props) {
      * found the bug after all this time.
      */
     let uniqueImageIdentifier = Math.floor(Math.random() * 100) + 1;
-    var ref = storage.ref().child("images/" + uniqueImageIdentifier);
+    var ref = storage.ref().child("images/" + (imageName + uniqueImageIdentifier));
     ref.put(blob)
 
     return ref.put(blob)
