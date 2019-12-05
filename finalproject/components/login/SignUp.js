@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   buttonText :{
-    fontFamily : 'sans-serif-medium',
     fontSize : 15,
     fontStyle : 'normal',
     color : '#423D39',
@@ -92,7 +91,6 @@ const styles = StyleSheet.create({
     top: '20%',
   },
   signupText : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 20,
     fontStyle : 'italic',
     color : '#423D39',

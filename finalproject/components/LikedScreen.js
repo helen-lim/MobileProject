@@ -28,19 +28,19 @@ export default function LikedScreen(props) {
       <View style={styles.container}>
         <View style={styles.submitContainer2}>
           <View style = {styles.submitTextContainer}>
-            <Text style = {styles.submitText}>memes that have brought you joy</Text>
+            <Text style = {styles.submitText}>Memes that have brought you joy</Text>
           </View>
           <View style = {styles.submissionsBox}>
             <ScrollView style={{ width: '100%', height: 400,}} >
             {unseenMemes.filter((meme) => {
                 for(var i in meme.liked) {
-                  if(meme.liked[i] == (currentUser && currentUser.uid)){
+                  if(meme.liked[i] == (currentUser && currentUser.uid)) {
                     return true
                   }
                 }
                 return false
               }).map((meme, index) => (
-                <View style={styles.subcontainer3}>
+                <View key={index} style={styles.subcontainer3}>
                   <Memecard uri={meme.link} name={meme.name}/>
                 </View>
               ))}
@@ -96,7 +96,6 @@ export default function LikedScreen(props) {
       height: 38,
     },
     submitText : {
-      fontFamily : 'sans-serif-medium',
       fontSize : 20,
       fontStyle : 'italic',
       color : '#423D39',
@@ -104,69 +103,3 @@ export default function LikedScreen(props) {
       textAlign : 'center'
     },
   })
-/*
-          <View style={styles.subcontainer1}>
-            <Text style={styles.paragraph}>
-              Liked Memes
-            </Text>
-            <ScrollView style={{marginHorizontal: 30, width: '90%', height: 400,}} >
-              {unseenMemes.filter((meme) => {
-                for(var i in meme.liked) {
-                  if(meme.liked[i] == (currentUser && currentUser.uid)){
-                    return true
-                  }
-                }
-                return false
-              }).map((meme, index) => (
-                <View key={index} style={styles.subcontainer3}>
-                  <Memecard uri={meme.link} name={meme.name}/>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'space-around',
-      width: '100%',
-    },
-    subcontainer1: {
-      flex: 1,
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },  
-    subcontainer3: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      width: '100%',
-    }, 
-    listimage: {
-      flex: 1,
-      alignSelf: 'stretch',
-      width: 300,
-      height:300,
-    },
-    header:{
-      height: 60,
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#87ceeb',
-    },
-    headertext: {
-      fontSize: 18,
-      letterSpacing: 2,
-      color: '#414a4e',
-      fontWeight: 'bold',
-    },
-    paragraph: {
-      margin: 24,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-  });
-*/
