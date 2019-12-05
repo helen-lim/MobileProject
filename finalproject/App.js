@@ -17,12 +17,14 @@ import SignUpScreen from './components/login/SignUp'
 import LoginScreen from './components/login/Login'
 import firebase from 'firebase'
 import MapScreen from './components/MapScreen';
+import RNCardStack from './components/RNCardStack';
 
 const TabNavigator = createBottomTabNavigator({
   User: { screen: UserScreen },
   Home: { screen: HomeScreen },
   Liked: { screen: LikedScreen },
   Map: { screen: MapScreen },
+  TEMP: { screen: RNCardStack },
   }, 
   {
     initialRouteName : 'Home',

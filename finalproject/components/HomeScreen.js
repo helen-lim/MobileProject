@@ -9,57 +9,55 @@ export default class HomeScreen extends Component {
   constructor(props){
     super(props)
     this.state = {
-      unseenMemes: [],
+      allMemes: [],
       currentUser: null,
     };
   };
   
   componentDidMount() {
-    this.setState({ currentUser: firebase.auth().currentUser})
+    this.setState({ currentUser: firebase.auth().currentUser })
+
+    // Clear existing Array
+    this.state.allMemes.length = 0;
 
     database.ref('memes/').on('value', function(snapshot) {
 
-      // fetch new memes
+      // fetch all memes
       let parseObject = snapshot.val();
-      var newResults = [];
+      var results = [];
       for(var i in parseObject) {
-        newResults.push(parseObject[i]);
+        results.push(parseObject[i]);
       }
 
-      // current memes list empty
-      if (this.state.unseenMemes.length == 0) {
-        this.setState({ unseenMemes: newResults })
-        console.log("setState() b/c unseenMemes empty")
-      }
-
-      // only setState() if new memes came in
-      for (var i in newResults) {
-
-        var newMemeFound = true;
-        for (var j in this.state.unseenMemes) {
-          if (newResults[i].uid == this.state.unseenMemes[j].uid) newMemeFound = false;
+      // filter out memes already seen by the user
+      results = results.filter((meme) => {
+        for (var i in meme.seenBy) {
+          console.log(i + "           INSIDE COMPONENTDIDMOUNT(): " + "(meme.seen[i] === this.state.currentUser.uid) is... " + (meme.seenBy[i] === this.state.currentUser.uid))
+          if (meme.seenBy[i] === this.state.currentUser.uid) {
+            return false
+          }
         }
+        return true
+      })
 
-        // new meme so we want to actually update state
-        if (newMemeFound) {
-          this.setState({ unseenMemes: newResults });
-          console.log("setState() b/c newMeme found");
-        }
-      }
+      // Update State
+      this.setState({ allMemes: results })
+      console.log("setState() called")
+
     }.bind(this), function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
+      console.log("componentDidMount: The read failed: " + errorObject.code);
     })
   }
 
   /**
    * Saves to Firebase that a user liked a meme
    */
-  likeMeme = async (memeID, userID) => {
+  likeMeme = async (memeID) => {
     var resultLikedBy = [];
     var resultSeenBy = [];
 
     // Get all users who LIKED the meme
-    database.ref('memes/' + memeID + '/liked').on('value', function(snapshot) {
+    database.ref('memes/' + memeID + '/likedBy').on('value', function(snapshot) {
       let likedBy = snapshot.val();
       for (var index in likedBy) {
         resultLikedBy.push(likedBy[index]);
@@ -67,7 +65,7 @@ export default class HomeScreen extends Component {
     });
 
     // Get all users who have SEEN the meme
-    database.ref('memes/' + memeID + '/seen').on('value', function(snapshot) {
+    database.ref('memes/' + memeID + '/seenBy').on('value', function(snapshot) {
       let seenBy = snapshot.val();
       for (var index in seenBy) {
         resultSeenBy.push(seenBy[index]);
@@ -75,25 +73,28 @@ export default class HomeScreen extends Component {
     });
 
     // Add user to list
-    resultLikedBy.push(userID);
-    resultSeenBy.push(userID);
+    resultLikedBy.push(this.state.currentUser.uid);
+    resultSeenBy.push(this.state.currentUser.uid);
+
+    // References to Firebase
+    var likedRef = database.ref('memes/' + memeID + '/likedBy');
+    var seenRef = database.ref('memes/' + memeID + '/seenBy');
 
     // Save to Firebase
-    var likedRef = database.ref('memes/' + memeID + '/liked');
-    var seenRef = database.ref('memes/' + memeID + '/seen');
     likedRef.set(resultLikedBy);
     seenRef.set(resultSeenBy);
+    console.log("Like Saved to Firebase")
   }
 
   /**
    * Saves to Firebase that a user disliked a meme
    */
-  dislikeMeme = async (memeID, userID) => {
+  dislikeMeme = async (memeID) => {
     var resultDislikedBy = [];
     var resultSeenBy = [];
 
     // Get all users who LIKED the meme
-    database.ref('memes/' + memeID + '/disliked').on('value', function(snapshot) {
+    database.ref('memes/' + memeID + '/dislikedBy').on('value', function(snapshot) {
       let dislikedBy = snapshot.val();
       for (var index in dislikedBy) {
         resultDislikedBy.push(dislikedBy[index]);
@@ -101,7 +102,7 @@ export default class HomeScreen extends Component {
     });
 
     // Get all users who have SEEN the meme
-    database.ref('memes/' + memeID + '/seen').on('value', function(snapshot) {
+    database.ref('memes/' + memeID + '/seenBy').on('value', function(snapshot) {
       let seenBy = snapshot.val();
       for (var index in seenBy) {
         resultSeenBy.push(seenBy[index]);
@@ -109,14 +110,18 @@ export default class HomeScreen extends Component {
     });
 
     // Add user to list
-    resultDislikedBy.push(userID);
-    resultSeenBy.push(userID);
+    resultDislikedBy.push(this.state.currentUser.uid);
+    resultSeenBy.push(this.state.currentUser.uid);
+
+    // References to Firebase
+    var dislikedRef = database.ref('memes/' + memeID + '/dislikedBy');
+    var seenRef = database.ref('memes/' + memeID + '/seenBy');
+    console.log("memes/{memeID}/seenBy Reference: " + seenRef);
 
     // Save to Firebase
-    var dislikedRef = database.ref('memes/' + memeID + '/disliked');
-    var seenRef = database.ref('memes/' + memeID + '/seen');
     dislikedRef.set(resultDislikedBy);
     seenRef.set(resultSeenBy);
+    console.log("Dislike Saved to Firebase")
   }
  
   render() {
@@ -125,37 +130,34 @@ export default class HomeScreen extends Component {
         <CardStack
           style={styles.content}
           renderNoMoreCards={() => <Text style={{ fontWeight: '700', fontSize: 18, color: 'gray' }}>No more cards :(</Text>}
-          ref={swiper => {
-            this.swiper = swiper
-          }}
+          ref={swiper => { this.swiper = swiper }}
         >
-          {this.state.unseenMemes.filter((meme) => {
-            for(var i in meme.seen) {
-              if(meme.seen[i] == this.state.currentUser.uid) {
-                return false
-              }
-            }
-            console.log("Post-Filtered Meme: " + JSON.stringify(meme))
-            return true
-          }).map((meme, index) => (
-            <Card key={index} style={[styles.card, styles.card1]} onSwipedLeft={() => this.dislikeMeme(meme.uid, this.state.currentUser.uid)} onSwipedRight={() => this.likeMeme(meme.uid, this.state.currentUser.uid) }>
-              <Image style={styles.listimage} source={{uri : meme.link }}/>
-              <Text style={styles.memeText}>{meme.name}</Text>
-            </Card>
-          ))}
+          {this.state.allMemes.map((meme, index) => {
+            console.log(index + "   INSDE RENDER(): " + JSON.stringify(meme))
+            return (
+              <Card 
+                key={index} style={[styles.card, styles.card1]} 
+                onSwipedLeft={() => this.dislikeMeme(meme.memeID)} 
+                onSwipedRight={() => this.likeMeme(meme.memeID)}
+              >
+                <Image style={styles.listimage} source={{uri : meme.link }}/>
+                <Text style={styles.memeText}>{meme.name}</Text>
+              </Card>
+            )
+          })}
         </CardStack>
  
         <View style={styles.footer}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.red]} onPress={() => {
-              console.log("Touched Dislike");
+              console.log("Dislike Button Pressed");
               this.swiper.swipeLeft();
             }}>
               <Text style = {styles.buttonTextStyle}>noo :(</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[styles.button, styles.green]} onPress={() => {
-              console.log("Touched Like");
+              console.log("Like Button Pressed");
               this.swiper.swipeRight();
             }}>
               <Text style = {styles.buttonTextStyle}>yaaas :)</Text>  

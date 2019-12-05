@@ -35,9 +35,18 @@ export default function UserScreen(props) {
   },[]);
 
   writeMemeData = async (creator, link, name) => {
+
+    // Firebase References
     var memesRef = database.ref('memes/');
     var newMemeRef = memesRef.push();
-    var uid = newMemeRef.key;
+    var memeID = newMemeRef.key;
+
+    // placeholders for later use
+    var dislikedBy = [];
+    var likedBy = [];
+    var seenBy = [];
+
+    // Fetch Device Location
     navigator.geolocation.getCurrentPosition(
       (position) => {
 
@@ -48,13 +57,15 @@ export default function UserScreen(props) {
         }
         // save meme to Firebase
         newMemeRef.set({
-          creator,
-          link,
           name,
-          uid,
-          coordinate
+          memeID,
+          link,
+          creator,
+          coordinate,
+          dislikedBy,
+          likedBy,
+          seenBy
         })
-        console.log(coordinate);
       },
       (error) => { 
         console.log("ERROR: " + error.message)
@@ -66,11 +77,14 @@ export default function UserScreen(props) {
         }
         // save meme to Firebase
         newMemeRef.set({
-          creator,
-          link,
           name,
-          uid,
-          coordinate
+          memeID,
+          link,
+          creator,
+          coordinate,
+          dislikedBy,
+          likedBy,
+          seenBy
         })
       },
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
@@ -88,7 +102,6 @@ export default function UserScreen(props) {
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             this.writeMemeData(currentUser.uid, url, submitName);
-            console.log(test);
             Alert.alert('Upload successful!');
           })
         })
@@ -109,7 +122,6 @@ export default function UserScreen(props) {
         .then((snapshot) => {
           snapshot.ref.getDownloadURL().then((url) => {
             this.writeMemeData(currentUser.uid, url, submitName);
-            console.log(test);
             Alert.alert('Upload successful!');
           })
         })
