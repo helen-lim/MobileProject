@@ -35,13 +35,13 @@ export default class HomeScreen extends Component {
       // only setState() if new memes came in
       for (var i in newResults) {
 
-        var newMeme = true;
+        var newMemeFound = true;
         for (var j in this.state.unseenMemes) {
-          if (newResults[i].uid == this.state.unseenMemes[j].uid) newMeme = false;
+          if (newResults[i].uid == this.state.unseenMemes[j].uid) newMemeFound = false;
         }
 
         // new meme so we want to actually update state
-        if (newMeme) {
+        if (newMemeFound) {
           this.setState({ unseenMemes: newResults });
           console.log("setState() b/c newMeme found");
         }
