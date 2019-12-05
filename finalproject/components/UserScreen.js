@@ -18,7 +18,7 @@ import { TextInput } from 'react-native-paper';
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
-  const [submitName, onChangeText] = useState('enter a memetastic title');
+  const [submitName, onChangeText] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {    
@@ -178,7 +178,9 @@ export default function UserScreen(props) {
       </View>
       <View style={styles.submitContainer}>
         <TextInput
-          label='Your Meme Title'
+          mode='outlined'
+          placeholder="Enter a memetastic title"
+          label='meme title'
           onChangeText={text=>onChangeText(text)} 
           value={submitName}
           style={{width: '60%'}} 
