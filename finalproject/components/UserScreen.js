@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
+import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; 
 import { storage, database } from './Firebase';
 import firebase from 'firebase'
 import Memecard from './meme'
 import * as Permissions from 'expo-permissions';
+import { TextInput } from 'react-native-paper';
 
 // To-do: Reem Kufi font 
 // componentDidMount() {
@@ -176,6 +177,12 @@ export default function UserScreen(props) {
        <Text style = {styles.submitText}>Contribute to the Meme Cloud</Text>
       </View>
       <View style={styles.submitContainer}>
+        <TextInput
+          label='Your Meme Title'
+          onChangeText={text=>onChangeText(text)} 
+          value={submitName}
+          style={{width: '60%'}} 
+        />
         <View style = {styles.submitButtonContainer1}>
           <TouchableOpacity onPress={this.onChooseImagePress}>
               <Image style = {styles.uploadButton} source={require('../assets/upload.png')} />
@@ -184,7 +191,6 @@ export default function UserScreen(props) {
               <Image style = {styles.uploadButton} source={require('../assets/camera.png')} />
             </TouchableOpacity>
         </View>
-        <TextInput style = {styles.submitUserText} onChangeText={text=>onChangeText(text)} value={submitName} />
       </View>
 
       <View style={styles.submitContainer2}>
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    height: '10%',
+    marginTop: 30,
     width: '100%',
   },
   subcontainer3: {
@@ -253,13 +259,15 @@ const styles = StyleSheet.create({
     textAlign : 'center'
   },
   submitUserText : {
-    width: 176,
-    height: 31,
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1,
+    borderRadius: 10,
   },
   submitTextContainer : {
-    width: 300,
-    height: 38,
-    top: 10,
+    width: '100%',
+    height: 50,
+    top: 20,
   },
   submitText : {
     fontSize : 18,
@@ -271,19 +279,21 @@ const styles = StyleSheet.create({
   submitContainer : {
     width: '100%',
     height: '15%',
-
-    flexDirection : 'row',
+    flexDirection : 'column',
     justifyContent : 'space-around',
+    alignItems: 'center'
   },
   submitButtonContainer1 : {
-    width: 90, 
+    width: '35%', 
     height: 30,
+    marginTop: 5,
+    marginBottom: 5,
     flexDirection : 'row',
     justifyContent : 'space-evenly',
   },
   uploadButton : {
-    width:30,
-    height: 30,
+    width: 40,
+    height: 40,
   },
   userTextContainer : {
     width: 150,
