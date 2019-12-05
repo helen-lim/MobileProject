@@ -33,8 +33,8 @@ export default function LikedScreen(props) {
           <View style = {styles.submissionsBox}>
             <ScrollView style={{ width: '100%', height: 400,}} >
             {unseenMemes.filter((meme) => {
-                for(var i in meme.liked) {
-                  if(meme.liked[i] == currentUser.uid) {
+                for(var i in meme.likedBy) {
+                  if(meme.likedBy[i] == currentUser.uid) {
                     return true
                   }
                 }
