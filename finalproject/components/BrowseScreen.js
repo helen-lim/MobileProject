@@ -12,7 +12,7 @@ export default class BrowseScreen extends Component {
   render() {
     return (
       <View style={[Styles.container, Styles.sideColors]}>
-        <Text style={{ fontWeight: '700', fontSize: 30, color: 'gray', marginTop: 50, paddingTop: 30 }}>Swipe Left or Right!</Text>
+        <Text style={{ fontWeight: '700', fontSize: 30, color: '#012b57', marginTop: 50, paddingTop: 30 }}>Swipe Left or Right!</Text>
         <CardStack/>
       </View>
     );

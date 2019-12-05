@@ -152,7 +152,7 @@ export default function UserScreen(props) {
 
   
   return (
-    <View style={{flex:1, flexDirection: 'column'}}>
+    <View style={{flex:1, flexDirection: 'column', backgroundColor: '#f7f7f7'}}>
       <View style={styles.userContainer}>
         <View style={styles.userTextContainer}>
           <Text style={styles.userText}>Your Profile</Text>

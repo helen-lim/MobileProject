@@ -47,7 +47,7 @@ const TabNavigator = createBottomTabNavigator({
       activeTintColor: '#2a9d84',
       inactiveTintColor: '#264653',
       style: {
-        backgroundColor: '#d1edf0'
+        backgroundColor: '#ffffff'
       } 
     },
   },
@@ -64,7 +64,7 @@ const HomeScreenStack = createStackNavigator({
     defaultNavigationOptions: {
       headerTitle: 'memes',
       headerLeft: null, // removes back button
-      headerStyle: {backgroundColor: '#d1edf0'},
+      headerStyle: {backgroundColor: '#76abd9'},
       headerTitleStyle: {fontWeight: "300", fontSize: 20}
     },
 })
