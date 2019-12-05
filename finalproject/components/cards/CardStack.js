@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import Styles from './Styles.js';
 import Card from './Card.js';
+import { database } from '../Firebase';
+import firebase from 'firebase'
 
 export default class CardStack extends Component {
 
@@ -10,10 +12,16 @@ export default class CardStack extends Component {
     super(props);
     this.state = {
       users: [],
+      currentUser: null,
     };
   }
 
   componentWillMount() {
+
+    // Firebase Auth
+    this.setState({ currentUser: firebase.auth().currentUser })
+
+    // Start with 3 Memes
     for(let i = 0; i < 3; i++){
       this.handleAdd();
     }
@@ -23,6 +31,7 @@ export default class CardStack extends Component {
     try {
       let response = await fetch('https://randomuser.me/api');
       let result = await response.json();
+      console.log("RESULT: " + JSON.stringify(result));
       this.setState({
         users: [result.results[0], ...this.state.users],
       });
