@@ -2,70 +2,54 @@ import * as React from 'react';
 import { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import CardStack, { Card } from 'react-native-card-stack-swiper';
-import { useState, useEffect } from 'react';
-import { storage, database } from './Firebase';
+import { database } from './Firebase';
 import firebase from 'firebase'
-import { Gyroscope, Accelerometer, DeviceMotion } from 'expo-sensors';
-import { tsConstructSignatureDeclaration } from '@babel/types';
 
 export default class HomeScreen extends Component {
   constructor(props){
     super(props)
     this.state = {
-      deviceMotionData: {},
       unseenMemes: [],
       currentUser: null,
     };
   };
   
   componentDidMount() {
-    this._toggle();
-
     this.setState({ currentUser: firebase.auth().currentUser})
 
     database.ref('memes/').on('value', function(snapshot) {
+
+      // fetch new memes
       let parseObject = snapshot.val();
-      var result = [];
+      var newResults = [];
       for(var i in parseObject) {
-        result.push(parseObject[i]);
+        newResults.push(parseObject[i]);
       }
-      this.setState({ unseenMemes: result });
-      console.log("ComponentDidMount(): unseenMemes: [] succesfully updated");
+
+      // current memes list empty
+      if (this.state.unseenMemes.length == 0) {
+        this.setState({ unseenMemes: newResults })
+        console.log("setState() b/c unseenMemes empty")
+      }
+
+      // only setState() if new memes came in
+      for (var i in newResults) {
+
+        var newMeme = true;
+        for (var j in this.state.unseenMemes) {
+          if (newResults[i].uid == this.state.unseenMemes[j].uid) newMeme = false;
+        }
+
+        // new meme so we want to actually update state
+        if (newMeme) {
+          this.setState({ unseenMemes: newResults });
+          console.log("setState() b/c newMeme found");
+        }
+      }
     }.bind(this), function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
   }
- 
-  componentWillUnmount() {
-    this._unsubscribe();
-  }
- 
-  _toggle = () => {
-    if (this._subscription) {
-      this._unsubscribe();
-    } else {
-      this._subscribe();
-    }
-  };
- 
-  _slow = () => {
-    DeviceMotion.setUpdateInterval(1000);
-  };
- 
-  _fast = () => {
-    DeviceMotion.setUpdateInterval(16);
-  };
- 
-  _subscribe = () => {
-    this._subscription = DeviceMotion.addListener(result => {
-      this.setState({ deviceMotionData: result });
-    });
-  };
- 
-  _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  };
 
   /**
    * Saves to Firebase that a user liked a meme
@@ -136,11 +120,6 @@ export default class HomeScreen extends Component {
   }
  
   render() {
-    let data = this.state.deviceMotionData;
-    let rotate = {}
-    for (var value in data.rotate){
-      rotate[value] = data.rotate[value];
-    }
     return (
       <View style={{ flex: 1 }}>
         <CardStack
