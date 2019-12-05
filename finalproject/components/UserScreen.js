@@ -133,7 +133,17 @@ export default function UserScreen(props) {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    var ref = storage.ref().child("images/" + imageName);
+    /**
+     * :::::::::VERY IMPORTANT:::::::::
+     * The way Firebase Storage works is that
+     * any image updated with the same "images/{imageName}"
+     * will overwrite the existing image in the database
+     * and thus any meme with a reference to that image.
+     * This was a huge pain in the ass and I can't believe I
+     * found the bug after all this time.
+     */
+    let uniqueImageIdentifier = Math.floor(Math.random() * 100) + 1;
+    var ref = storage.ref().child("images/" + uniqueImageIdentifier);
     ref.put(blob)
 
     return ref.put(blob)
