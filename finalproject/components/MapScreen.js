@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { Text, Button, View, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import { database } from './Firebase';
 import memoize from 'memoize-one';
 
@@ -85,17 +85,20 @@ export default class MapScreen extends React.Component {
                     >
                         {this.state.memes.map((meme, index) => ( 
                             <Marker 
+                                image={require('../assets/marker.png')}
                                 key={index} 
                                 title={meme.name}
                                 coordinate={meme.coordinate} 
-                            /> 
+                                
+                            > 
+                            </Marker>
                         ))}
                     </MapView>
                 </View>
                 <TouchableOpacity onPress={this.getCurrentLocation} style={styles.currentLocationButton} >
                     <Image
                         style={styles.image}
-                        source={require('../assets/current-location-icon.png')}
+                        source={require('../assets/location.png')}
                     />
                 </TouchableOpacity>
             </View>
@@ -108,6 +111,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
     },
+    markerView : {
+        width: 140,
+        height: 140,
+        flexDirection : 'column',
+        backgroundColor : 'gray',
+    },
+    markerTitleContainer : {
+        width: '100%',
+        //height: '10%',
+    },
+    markerImage : {
+        width: 100,
+        //height: '90%',
+        resizeMode : 'cover'
+    },
     mapContainer: {
         flex: 1,
         justifyContent: 'space-around',
@@ -118,8 +136,8 @@ const styles = StyleSheet.create({
     },
     currentLocationButton: {
         position: 'absolute',
-        left: 10,
-        top: 10,
+        right: 10,
+        bottom: 10,
     },
     image: {
         flex: 1,

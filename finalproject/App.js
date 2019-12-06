@@ -58,18 +58,86 @@ const HomeScreenStack = createStackNavigator({
     Loading: { screen: LoadingScreen },
     SignUp: { screen: SignUpScreen },
     Login: { screen: LoginScreen },
-    Main: { screen: TabNavigator }
+    Main: { screen: TabNavigator, navigationOptions : { header: null} }
 }, {
     initialRouteName: 'Loading',
     defaultNavigationOptions: {
-      headerTitle: 'memes',
-      headerLeft: null, // removes back button
-      headerStyle: {backgroundColor: '#76abd9'},
-      headerTitleStyle: {fontWeight: "300", fontSize: 20}
+      header: () => <HeaderStyle />
+      // headerTitle: 'memes',
+      // headerLeft: null, // removes back button
+      // headerStyle: {backgroundColor: '#76abd9'},
+      // headerTitleStyle: {fontWeight: "300", fontSize: 20}
     },
 })
 
-const styles = StyleSheet.create({})
+class HeaderStyle extends React.Component {
+  render() {
+    return (
+        <View style = {styles.headerContainer}>
+          <View style = {styles.shadowContainer}>
+            <Text style = {styles.shadow}>
+              memes
+            </Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style = {styles.text}>
+              memes
+            </Text>
+          </View>
+
+          <View style={styles.imageContainer}>
+              <Image source={require('./assets/liked.png')} style = {styles.imageStyle} />
+          </View>
+        </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  headerContainer : {
+    justifyContent : 'center',
+    alignItems : 'center',
+    width : '100%',
+    height : '10%',
+    backgroundColor : '#F5B988',
+  },
+  textContainer : {
+
+  },
+  imageContainer : {
+    position: 'absolute',
+    left: 250,
+    top: 35
+
+  },
+  imageStyle : {
+    width: 25,
+    height: 26,
+  },
+  shadowContainer : {
+    position : 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent : 'center',
+    alignItems : 'center',
+    left: -2,
+    top: -1.5,
+  },
+  shadow: {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 35,
+    fontStyle : 'italic',
+    color : '#FF8119',
+  },
+  text : {
+    fontFamily : 'sans-serif-medium',
+    fontSize : 35,
+    fontStyle : 'italic',
+    color : '#423D39',
+  }
+})
+
+//const styles = StyleSheet.create({})
 
 /**
  * Launch Point of Application

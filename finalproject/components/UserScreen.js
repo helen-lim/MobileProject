@@ -8,13 +8,6 @@ import Memecard from './meme'
 import * as Permissions from 'expo-permissions';
 import { TextInput } from 'react-native-paper';
 
-// To-do: Reem Kufi font 
-// componentDidMount() {
-//   Font.loadAsync({
-//     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-//   });
-// }
-
 export default function UserScreen(props) {
   const [submittedMemes, setSubmittedMemes] = useState([]);
   const [likedMemes, setLikedMemes] = useState([]);
@@ -154,8 +147,9 @@ export default function UserScreen(props) {
   return (
     <View style={{flex:1, flexDirection: 'column', backgroundColor: '#f7f7f7'}}>
       <View style={styles.userContainer}>
+        <Image style = {styles.backgroundStyle} source={require('../assets/kitchen_orange.png')} />
         <View style={styles.userTextContainer}>
-          <Text style={styles.userText}>Your Profile</Text>
+          <Text style={styles.userText}>Profile</Text>
         </View>
         <View style = {styles.logoutButtonContainer}>
           <TouchableOpacity   onPress={() => 
@@ -183,7 +177,7 @@ export default function UserScreen(props) {
           label='meme title'
           onChangeText={text=>onChangeText(text)} 
           value={submitName}
-          style={{width: '60%'}} 
+          style={{width: '60%', height: 40}} 
         />
         <View style = {styles.submitButtonContainer1}>
           <TouchableOpacity onPress={this.onChooseImagePress}>
@@ -194,6 +188,13 @@ export default function UserScreen(props) {
             </TouchableOpacity>
         </View>
       </View>
+
+      <View style = {{
+          width : '100%',
+          height : '0.5%',
+          top : 5,
+          backgroundColor: '#F5B988'
+        }}></View>
 
       <View style={styles.submitContainer2}>
         <View style = {styles.submitTextContainer}>
@@ -227,8 +228,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 30,
     width: '100%',
+    height : '15%',
+    backgroundColor : '#F5B988'
+  },
+  backgroundStyle : {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    left: '85%',
+    top : '60%'
   },
   subcontainer3: {
     flex: 1,
@@ -238,7 +247,7 @@ const styles = StyleSheet.create({
   }, 
   submissionsBox : {
     width: '80%',
-    height : '100%',
+    height : '90%',
     borderWidth : 4,
     borderColor : '#707A7E',
     borderStyle: 'solid',
@@ -268,7 +277,7 @@ const styles = StyleSheet.create({
   },
   submitTextContainer : {
     width: '100%',
-    height: 50,
+    height: 40,
     top: 20,
   },
   submitText : {
@@ -303,10 +312,11 @@ const styles = StyleSheet.create({
   },
   userText: {
     fontSize : 25,
-    fontStyle : 'italic',
+    fontStyle : 'normal',
     color : '#423D39',
+    fontWeight : 'bold',
 
-    textAlign : 'center'
+    textAlign : 'left'
   },
   logoutButtonContainer : {
     width: 105,

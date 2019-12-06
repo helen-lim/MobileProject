@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 30620,
-  "expoServerNgrokUrl": "https://q9-mpk.anonymous.finalproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.q9-mpk.anonymous.finalproject.exp.direct",
-  "ngrokPid": 29820,
+  "packagerPid": 3440,
+  "expoServerNgrokUrl": "https://q9-mpk.helen-lim.finalproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.q9-mpk.helen-lim.finalproject.exp.direct",
+  "ngrokPid": 3760,
   "webpackServerPort": null
 }
