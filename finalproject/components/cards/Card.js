@@ -5,11 +5,12 @@ import {
   Animated,
   View,
   Image,
-  Text
+  Text,
 } from 'react-native';
 import Styles from './Styles.js';
 import { database } from '../Firebase';
 import firebase from 'firebase'
+
 
 export default class Card extends Component {
 
@@ -17,7 +18,7 @@ export default class Card extends Component {
     super(props);
     this.state = {
       pan: new Animated.ValueXY(),
-      currentUser: firebase.auth().currentUser
+      currentUser: firebase.auth().currentUser,
     };
   }
 
@@ -135,13 +136,13 @@ export default class Card extends Component {
   }
 
   render() {
-    let {memeID, name, link} = this.props;
+    let {memeID, name, link, deviceShook} = this.props;
     return (
       <Animated.View style={this.getMainCardStyle()} {...this.panResponder.panHandlers}>
         <View style={Styles.card}>
           <Image source={{uri: link}} style={Styles.cardImage}/>
           <View style={Styles.cardText}>
-            <Text style={Styles.cardTextMain}>{name}</Text>
+          <Text style={Styles.cardTextMain}>{name}</Text>
           </View>
         </View>
       </Animated.View>

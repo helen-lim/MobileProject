@@ -26,12 +26,16 @@ export default function LikedScreen(props) {
   
     return (
       <View style={styles.container}>
-        <View style={styles.submitContainer2}>
-          <View style = {styles.submitTextContainer}>
-            <Text style = {styles.submitText}>Memes that brought you joy</Text>
+        <View style={styles.userContainer}>
+          <Image style = {styles.backgroundStyle} source={require('../assets/kitchen_orange.png')} />
+          <View style={styles.userTextContainer}>
+            <Text style={styles.userText}>memes that have brought you joy</Text>
           </View>
+        </View>
+
+        <View style={styles.submitContainer2}>
           <View style = {styles.submissionsBox}>
-            <ScrollView style={{ width: '100%', height: 400,}} >
+            <ScrollView style={{ width: '100%', height: '100%',}} >
             {unseenMemes.filter((meme) => {
                 for(var i in meme.likedBy) {
                   if(meme.likedBy[i] == currentUser.uid) {
@@ -54,9 +58,53 @@ export default function LikedScreen(props) {
     container :{
       flex: 1,
       flexDirection: 'column',
-      marginTop: 30,
+      //marginTop: 30,
       backgroundColor: '#f7f7f7',
       alignItems: 'center',
+    },
+    userContainer :{
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flexDirection: 'row',
+      width: '100%',
+      height : '15%',
+      backgroundColor : '#F5B988'
+    },
+    backgroundStyle : {
+      position: 'absolute',
+      width: 50,
+      height: 50,
+      left: '85%',
+      top : '60%'
+    },
+    userTextContainer : {
+      width: '100%',
+      height: 35,
+    },
+    userText: {
+      fontSize : 20,
+      fontStyle : 'normal',
+      color : '#423D39',
+      fontWeight : 'bold',
+  
+      textAlign : 'center'
+    },
+    logoutButtonContainer : {
+      width: 105,
+      height: 25,
+  
+    },
+    logoutButtonTextContainer : {
+      width: 105,
+      height: 25,
+      borderRadius : 10,
+      backgroundColor: '#D7823B',
+    },
+    logoutButtonText : {
+      fontSize : 20,
+      fontStyle : 'italic',
+      color : '#423D39',
+      textAlign : 'center'
     },
     subcontainer3: {
       flex: 1,
@@ -66,7 +114,8 @@ export default function LikedScreen(props) {
     }, 
     submissionsBox : {
       width: '80%',
-      height : '100%',
+      height : '80%',
+      top : '3%',
       borderWidth : 4,
       borderColor : '#707A7E',
       borderStyle: 'solid',
@@ -97,6 +146,7 @@ export default function LikedScreen(props) {
     submitTextContainer : {
       width: 300,
       height: 38,
+      top : 10,
     },
     submitText : {
       fontSize : 20,

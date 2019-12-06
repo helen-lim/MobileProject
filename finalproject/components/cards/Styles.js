@@ -34,12 +34,18 @@ const Styles = StyleSheet.create({
     backgroundColor: '#1E90FF'
   },
   cardText: {
-    margin: 20
+    //margin: 20,
+    height : '10%',
+    justifyContent : 'center',
+    backgroundColor : '#F5B988',
   },
   cardTextMain: {
     textAlign: 'left',
     fontSize: 20,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    left : 10,
+    fontStyle : 'italic',
+    fontWeight : 'bold'
   },
   cardTextSecondary: {
     textAlign: 'left',
