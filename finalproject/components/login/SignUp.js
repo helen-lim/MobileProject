@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   signupTextContainer : {
     height : 30,
     width: '100%',
-    top: '20%',
+    top: '30%',
   },
   signupText : {
     fontSize : 20,

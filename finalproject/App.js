@@ -55,12 +55,11 @@ const TabNavigator = createBottomTabNavigator({
 );
 
 const HomeScreenStack = createStackNavigator({
-    Loading: { screen: LoadingScreen },
     SignUp: { screen: SignUpScreen },
     Login: { screen: LoginScreen },
     Main: { screen: TabNavigator, navigationOptions : { header: null} }
 }, {
-    initialRouteName: 'Loading',
+    initialRouteName: 'SignUp',
     defaultNavigationOptions: {
       header: () => <HeaderStyle />
       // headerTitle: 'memes',
@@ -84,10 +83,6 @@ class HeaderStyle extends React.Component {
               memes
             </Text>
           </View>
-
-          <View style={styles.imageContainer}>
-              <Image source={require('./assets/liked.png')} style = {styles.imageStyle} />
-          </View>
         </View>
     );
   }
@@ -95,10 +90,12 @@ class HeaderStyle extends React.Component {
 
 const styles = StyleSheet.create({
   headerContainer : {
+    paddingTop: 30,
+    flex:1,
     justifyContent : 'center',
     alignItems : 'center',
     width : '100%',
-    height : '10%',
+    height : '30%',
     backgroundColor : '#F5B988',
   },
   textContainer : {
@@ -121,16 +118,14 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
     alignItems : 'center',
     left: -2,
-    top: -1.5,
+    top: 30.5,
   },
   shadow: {
-    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#FF8119',
   },
   text : {
-    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#423D39',

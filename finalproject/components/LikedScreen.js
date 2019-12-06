@@ -82,7 +82,7 @@ export default function LikedScreen(props) {
       height: 35,
     },
     userText: {
-      fontSize : 25,
+      fontSize : 20,
       fontStyle : 'normal',
       color : '#423D39',
       fontWeight : 'bold',
