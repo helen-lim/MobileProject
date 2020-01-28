@@ -1,3 +1,4 @@
+// Testing
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Picker,Image, Button, Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
@@ -55,11 +56,12 @@ const TabNavigator = createBottomTabNavigator({
 );
 
 const HomeScreenStack = createStackNavigator({
+    Loading: { screen: LoadingScreen },
     SignUp: { screen: SignUpScreen },
     Login: { screen: LoginScreen },
-    Main: { screen: TabNavigator, navigationOptions : { header: null} }
+    Main: { screen: TabNavigator, navigationOptions : { header: null } }
 }, {
-    initialRouteName: 'SignUp',
+    initialRouteName: 'Loading',
     defaultNavigationOptions: {
       header: () => <HeaderStyle />
       // headerTitle: 'memes',
@@ -83,6 +85,10 @@ class HeaderStyle extends React.Component {
               memes
             </Text>
           </View>
+
+          <View style={styles.imageContainer}>
+              <Image source={require('./assets/liked.png')} style = {styles.imageStyle} />
+          </View>
         </View>
     );
   }
@@ -90,12 +96,10 @@ class HeaderStyle extends React.Component {
 
 const styles = StyleSheet.create({
   headerContainer : {
-    paddingTop: 30,
-    flex:1,
     justifyContent : 'center',
     alignItems : 'center',
     width : '100%',
-    height : '30%',
+    height : '10%',
     backgroundColor : '#F5B988',
   },
   textContainer : {
@@ -118,14 +122,16 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
     alignItems : 'center',
     left: -2,
-    top: 30.5,
+    top: -1.5,
   },
   shadow: {
+    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#FF8119',
   },
   text : {
+    fontFamily : 'sans-serif-medium',
     fontSize : 35,
     fontStyle : 'italic',
     color : '#423D39',
